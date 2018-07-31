@@ -1,1 +1,6 @@
-111
+
+
+class QuadraticEquationSolver:
+    def quadFormulaFunction(self):
+
+        
