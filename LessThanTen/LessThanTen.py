@@ -7,11 +7,11 @@ def LessThanTen():
 
     lessValue = int(input("State the number that will be compared to the list: "))
 
-    i = 0
+    
     for element in aList:
-        if (aList[i] < lessValue):
-            lesserList.append(aList[i])
-        i += 1
+        if (element < lessValue):
+            lesserList.append(element)
+        
 
     # after filling the second array just print
     print("The new list is: ")
