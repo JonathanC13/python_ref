@@ -13,6 +13,9 @@ def RevereWordOrder(text):
         wordList[len(wordList) - x - 1] = wordList[x]
         wordList[x] = temp
 
+        # split by space.join
+    # result = " ".join([word for word in wordList[::-1]]) 
+
     print (wordList)
 
 RevereWordOrder("What sentence would you like to reverse? ")
