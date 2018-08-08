@@ -13,4 +13,6 @@ def WriteToFile():
         f.write(str(elem))
         f.write("\n")
 
+    f.close()
+    
 WriteToFile()
