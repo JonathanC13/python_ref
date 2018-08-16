@@ -49,8 +49,15 @@ This list is meant to be a both a quick guide and reference for further research
 - Optimized Search: Linked Lists: O(n)
 - Insertion:        Linked Lists: O(1)  
 
-###**Linked  List searches**
+###**Linked List searches**
 - Only linear with iterative or recursion since you don't have direct access to elements of linked lists. Would need to traverse more than simply linear search.
+
+###**Linked List sort**
+- Merge sort is often preferred for sorting a linked list. The slow random-access performance of a linked list makes some other algorithms (such as quicksort) perform poorly, and others (such as heapsort) completely impossible.
+- Steps:
+  1. Divide the list into the smallest unit, which is one element. 2 halves represented as a and b.
+  2. Compare each half and order and merge them. Update the head reference to the smallest value element.
+
 
 ##Search for Arrays. http://bigocheatsheet.com/
 ###**Linear Search**
@@ -137,6 +144,33 @@ This list is meant to be a both a quick guide and reference for further research
 - Indexing:  Binary Search Tree: O(log n)
 - Search:    Binary Search Tree: O(log n)
 - Insertion: Binary Search Tree: O(log n)
+
+####**Creating the binary search tree**
+#####**Tree Sort**
+- If given a binary tree must copy into an array first (Breadth or Depth depending on the tree). If already in an array, ok.
+
+- Unsorted array
+  - Start with the first element as the root node and insert based on left child is less and right child is greater value. This most likely creates a sorted but unbalanced binary search tree.
+
+- Sorted Linked List. Balanced Binary search tree https://www.geeksforgeeks.org/?p=17063
+  - Method 1: Time complexity: O(n Log n)
+    - 1. Make the middle element of the linked list the root.
+    - 2. Recursively get the middle element from the left and make it the left child of the root.
+    - 3. Repeat step 2 but with the right side of root.
+  - Method 2; O(n).
+  - In this method, we construct from leaves to root. The idea is to insert nodes in BST in the same order as the appear in Linked List, so that the tree can be constructed in O(n) time complexity.
+    - After counting nodes, we take left n/2 nodes and recursively construct the left subtree. After left subtree is constructed, we allocate memory for root and link the left subtree with root. Finally, we recursively construct the right subtree and link it with root.
+    While constructing the BST, we also keep moving the list head pointer to next so that we have the appropriate pointer in each recursive call.
+
+- Sorted Array: O(n) easier than linked list due to direct access to the middle in O(1)
+  - 1. Make the middle element of the linked list the root.
+  - 2. Recursively get the middle element from the left and make it the left child of the root.
+  - 3. Repeat step 2 but with the right side of root.
+
+#####**Balancing**
+- Must keep track of the height of the left and right sub tree. The balance factor of a balanced tree can be -1, 0, or +1. balance_factor := height(right_subtree) - height(left_subtree)
+  - During insertion and deletion, compare at what height the operation is happening and if at a leaf, adjust the height values.
+- When an imbalance happens then the rotations (single or double) and/or element link changes are needed.
 
 ###****
 - AVL tree or height balanced binary tree
