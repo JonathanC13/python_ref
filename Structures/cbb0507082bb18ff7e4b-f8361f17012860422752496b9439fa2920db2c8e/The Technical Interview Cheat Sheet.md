@@ -29,7 +29,8 @@ This list is meant to be a both a quick guide and reference for further research
 - It is a data structure that stores data elements sequentially and it has to be declared with a fixed size. It is optimal for indexing since you have direct access to the indices, Big O of O of 1, but it is bad for inserting and deleting, Big O of O of n, except at the very end, since you have to shift the elements if it takes place within the array.
 
 **Dynamic Arrays**
-- Are like linear arrays where it stores data elements sequentially and is optimized for indexing, but when it is full it will attempt to grow, either in the same memory space if there is space or copy into a larger memory space elsewhere.
+- Are like linear arrays where it stores data elements sequentially and is optimized for indexing,
+- Is a data structure that will attempt to grow if you want to do an insertion and it is full, either in the same memory location if there is space or copy into a larger memory space elsewhere.
 
 **Two dimensional arrays**
 - Built to have x and y indices like a grid or nested arrays to represent something like a matrix or r,g,b values for an image.
@@ -71,7 +72,7 @@ This list is meant to be a both a quick guide and reference for further research
 
 ####**summary**
 **linked lists**
-- A linked list contains nodes, which has space for the data and a reference, and it chains nodes together by pointing a node's reference to another node. It is designed to optimize insertion and deletion, Big O of O of 1, but it is slow at indexing and searching, Big O of O of n, since you have to follow the links (can be very scattered memory locations).
+- A linked list contains nodes, which have space for the data and a reference, and it chains these nodes together by pointing a node's reference to another node. It is designed to optimize insertion and deletion, Big O of O of 1, but it is slow at indexing and searching, Big O of O of n, since you have to follow the links (can be very scattered memory locations).
 
 **Doubly Linked list**
 - In a Doubly linked list, each node has an additional reference that points to the previous node to enable backward traversal, this makes insertion and deletion quicker since you don't need traverse with additional pointers to perform the operations.
@@ -115,7 +116,7 @@ This list is meant to be a both a quick guide and reference for further research
 - Worst:  O(log n)
 
 ####**summary**
-- Given a sorted array, we divide the array in half and compare that pivot to the target then if it is lower than the target we divide into the left side, if it is greater we divide into the right side. It continues until the pivot is equal to the target or not found. Worst complexity of O of log n.
+- Given a sorted array, we divide the array in half and compare that pivot to the target then if the target is lower than the pivot we divide into the left side, if it is greater we divide into the right side. It continues until the pivot is equal to the target or not found. Worst complexity of O of log n.
 
 ###**Jump Search**
 ####Definition:
@@ -127,7 +128,7 @@ This list is meant to be a both a quick guide and reference for further research
 - Worst:  O(sqrt(N))
 
 ####**summary**
-- Given a sorted array, it iterates by jumping a fixed number of steps until the element is greater than the target to set the max, then it jumps back to set the min. From the range min to max it conducts a linear search to find the target. Worst Time complexity of O of square root n.
+- Given a sorted array, starting from the base it iterates by jumping a fixed number of steps until the element is greater than the target to set the max, then it jumps back to set the min. From the range min to max it conducts a linear search to find the target. Worst Time complexity of O of square root n.
 
 ###**Sublist Search (Search a linked list in another list)**
 ####Definition:
@@ -197,10 +198,10 @@ This list is meant to be a both a quick guide and reference for further research
 
 ####**summary**
 **binary tree**
-- Is a tree like data structure where every node has at most two children, left and right child. It is optimized for searching, insertion, and deletion if the tree remains balanced.
+- Is a  data structure where every node has at most two children, left and right child. It is optimized for (searching - only search tree?), insertion, and deletion if the tree remains balanced.
 
 **binary search tree**
-- Is a sorted tree with no duplicates that uses the node as a comparable key to choose which direction to keep searching, the left child is less than the parent and the right node is greater than the parent. Optimized for searching and sorting, assumed to remain balanced. Search Big O of O of log n.
+- Is a sorted tree with no duplicates that uses the node as a comparable key to its children, the left child is less than the parent and the right node is greater than the parent. Optimized for searching and sorting, assuming it is balanced. Search Big O of O of log n.
 
 ####
 
@@ -341,7 +342,7 @@ This list is meant to be a both a quick guide and reference for further research
 - Worst Case Sort: Merge Sort: O(n^2)
 
 ####**summary**
-- It is a comparison based sorting algorithm where a pivot element is chosen, could be the most right element, and then comparing elements left to right and swapping all the elements that are less than the pivot to the swap index. When it reaches the pivot, it is placed in the correct index. Average time complexity is O of n log n
+- It is a comparison based sorting algorithm where a pivot element is chosen, could be the most right element, and then comparing elements left to right and swapping all the elements that are less than the pivot to the swap index. When it reaches the pivot, the pivot placed in the correct index. Average time complexity is O of n log n
 
 ###**Bubble Sort**
 ####Definition:
