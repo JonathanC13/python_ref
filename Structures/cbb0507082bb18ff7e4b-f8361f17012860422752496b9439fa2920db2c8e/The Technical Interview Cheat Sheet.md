@@ -30,7 +30,7 @@ This list is meant to be a both a quick guide and reference for further research
 
 **Dynamic Arrays**
 - Are like linear arrays where it stores data elements sequentially and is optimized for indexing,
-- Is a data structure that will attempt to grow if you want to do an insertion and it is full, either in the same memory location if there is space or copy into a larger memory space elsewhere.
+- Is a data structure that will attempt to grow if you want to do an insertion when it is full, either it will grow in the same memory location if there is space or into a larger memory space elsewhere. (copying in larger array)
 
 **Two dimensional arrays**
 - Built to have x and y indices like a grid or nested arrays to represent something like a matrix or r,g,b values for an image.
@@ -81,7 +81,7 @@ This list is meant to be a both a quick guide and reference for further research
 - A linear search for a linked list is effective since you don't have direct access to elements of linked lists with indices.
 
 **Linked List sort**
-- Merge sort is often preferred for sorting a linked list. The slow random-access performance of a linked list makes some other algorithms (such as quicksort) perform poorly. It starts by continuously halving the dataset until the smallest unit of 1 element, then it orders the elements as it merges back into the complete set. Average Time complexity Big O of O of n log n.
+- Merge sort is often preferred for sorting a linked list. The slow random-access performance of a linked list makes some other algorithms (such as quicksort) perform poorly. It starts by continuously halving the dataset until the smallest unit of 1 element, then it orders the elements by pairs as it merges back into one complete set. Average Time complexity Big O of O of n log n.
 
 **Circularly linked list**
 - It is a simple linked list whose **tail** references the **head** of the linked list.
@@ -128,7 +128,7 @@ This list is meant to be a both a quick guide and reference for further research
 - Worst:  O(sqrt(N))
 
 ####**summary**
-- Given a sorted array, starting from the base it iterates by jumping a fixed number of steps until the element is greater than the target to set the max, then it jumps back to set the min. From the range min to max it conducts a linear search to find the target. Worst Time complexity of O of square root n.
+- Given a sorted array, starting from the base it iterates by jumping a fixed number of steps until the element is greater than the target to set the max, then it does one jump back to set the min. From the range min to max it conducts a linear search to find the target. Worst Time complexity of O of square root n. (larger than log n)
 
 ###**Sublist Search (Search a linked list in another list)**
 ####Definition:
@@ -141,7 +141,7 @@ This list is meant to be a both a quick guide and reference for further research
 - O(m*n), m is number of nodes in the first list and n in second.
 
 ####**Knuth–Morris–Pratt_algorithm**
-- Instead of just incrementing the index by 1 when a mismatch occurs, since you know where the mismatch happened the new index can be at that position (just in case to match head of pattern), unless there is a partial match you may need to backtrack from the new index (build a look up table to check how much to backtrack). The time complexity is O of n, where n is the length of the string.
+- Instead of just incrementing the index by 1 when a mismatch occurs, since you know where the mismatch happened the new index for the search can be at that position (just in case to match head of pattern), unless there is a partial match you may need to backtrack from the new index (build a look up table to check how much to backtrack). The time complexity is O of n, where n is the length of the string.
 
 - Θ(n), n is the length of the String.
 
@@ -159,7 +159,7 @@ This list is meant to be a both a quick guide and reference for further research
 
 ####What you need to know:
 - Designed to optimize searching, insertion, and deletion.
-- **Hash collisions** are when a hash function returns the same output for two distinct inputs.
+- **Hash collisions** are when a hash function returns the same output for two distinct inputs. Solutions are open addressing (find next available spot) or chaining (existing at same hash location but they link together).
   - All hash functions have this problem.
   - This is often accommodated for by having the hash tables be very large.
 - Hashes are important for associative arrays and database indexing.
@@ -322,7 +322,7 @@ This list is meant to be a both a quick guide and reference for further research
 - Worst Case Sort: Merge Sort: O(n log n)
 
 ####**summary**
-- It is a comparison based soring algorithm, where is starts by continuously halving the dataset until the smallest unit of 1 element, then it orders the elements as it merges back into the complete set. Average Time complexity is O of n log n.
+- It is a comparison based soring algorithm, where is starts by continuously halving the dataset until the smallest unit of 1 element, then it orders the elements by pairing groups as it merges back into one complete set. Average Time complexity is O of n log n. (bad, have to divide the array set close to linear increase)
 
 ###**Quicksort** https://www.geeksforgeeks.org/quick-sort/
 ####Definition:
@@ -342,7 +342,7 @@ This list is meant to be a both a quick guide and reference for further research
 - Worst Case Sort: Merge Sort: O(n^2)
 
 ####**summary**
-- It is a comparison based sorting algorithm where a pivot element is chosen, could be the most right element, and then comparing elements left to right and swapping all the elements that are less than the pivot to the swap index. When it reaches the pivot, the pivot placed in the correct index. Average time complexity is O of n log n
+- It is a comparison based sorting algorithm where a pivot element is chosen, could be the most right element, and a wall index is tracked to divide the values less and greater than the pivot. Each time an element is less than the pivot it swaps it to put it behind the wall and when it reaches the pivot the pivot is swapped to the wall index. Average time complexity is O of n log n
 
 ###**Bubble Sort**
 ####Definition:
@@ -363,6 +363,13 @@ This list is meant to be a both a quick guide and reference for further research
 - Quicksort is likely faster in practice.
 - Merge Sort divides the set into the smallest possible groups immediately then reconstructs the incrementally as it sorts the groupings.
 - Quicksort continually divides the set by the average, until the set is recursively sorted.
+
+###**Insertion Sort**
+####Definition:
+-  It is a comparison based sorting algorithm where the pivot is chosen starting from the left and compares the elements on the left of the pivot. If the pivot is less than an element, it is inserted to the left of it. An analogy is systematically sorting a hand of cards.
+
+####Big O efficiency:
+- O(n*n)
 
 ## Basic Types of Algorithms
 ###**Recursive Algorithms**
