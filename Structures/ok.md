@@ -2,7 +2,14 @@ TO DO:
 	Searching/sorting algorithms code and by hand
 	memorize pin calling in RPI
 
-	In C, arguments to functions are passed by value, not by reference (do a search on that), you need pointers to get the behavior of the latter
+	See what the value of referencing a pointer is
+	int *p;*
+	int c = 5;
+
+	p = &c;
+	print(*p)* ; value
+	print(p)	; address
+	print(&p)	;??
 
 	How to setup wiring pi and piface libraries : ?? simply download and include"??
 	Missing up to date fourth year project code?? LOL
@@ -175,7 +182,16 @@ GPIO.cleanup()
 
 end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
+###**By Reference and value**
+When a parameter is passed by reference, the caller and the callee use the same variable for the parameter. If the callee modifies the parameter variable, the effect is visible to the caller's variable.
+
+When a parameter is passed by value, the caller and callee have two independent variables with the same value. If the callee modifies the parameter variable, the effect is not visible to the caller.
+
 ###**C programming stuff**
+
+== A pointer stores the address of another variable.
+
+== 	In C, arguments to functions are passed by value. Example passing a pointer is passing the value of the pointer and to use it, you can deference it (*p for the content)* or reference ((&p or p) to get the address)
 
 == Call functions from other file:
 	Calling another .c file - #include "ClasseAusiliaria.c"
