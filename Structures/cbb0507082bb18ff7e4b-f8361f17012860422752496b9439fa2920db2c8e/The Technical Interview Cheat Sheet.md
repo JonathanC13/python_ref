@@ -46,7 +46,7 @@ This list is meant to be a both a quick guide and reference for further research
 
 ####What you need to know:
 - Designed to optimize insertion and deletion, slow at indexing and searching (follow the chain).
-- **Doubly linked list** has nodes that reference the previous node (enables backward traversal, insertion and deletion are quicker due to pointer to the previous node to connect). (w/o you would need two pointers traversing)
+- **Doubly linked list** has nodes that reference the previous node (enables backward traversal, quicker insertion and deletion if not always reseting the to the head). (w/o you would need two pointers traversing)
 - **Circularly linked list** is simple linked list whose **tail**, the last node, references the **head**, the first node.
 - **Stack**, commonly implemented with linked lists but can be made from arrays too.
   - Stacks are **last in, first out** (LIFO) data structures.
