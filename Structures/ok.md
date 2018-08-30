@@ -6,11 +6,11 @@ TO DO:
 	int *p;*
 	int c = 5;
 
-  print(&p); address of the actual pointer
-  print(p); address of stuff pointed to
+  - print(&p); address of the actual pointer
+  - print(p); address of stuff pointed to
 
 	p = &c;
-	print(*p)* ; value
+	print(*p) ; value*
 	print(p)	; address of now c
 	print(&p)	; address of actual pointer
 
