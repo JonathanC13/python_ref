@@ -6,10 +6,13 @@ TO DO:
 	int *p;*
 	int c = 5;
 
+  - print(&p); address of the actual pointer
+  - print(p); address of stuff pointed to
+
 	p = &c;
-	print(*p)* ; value
-	print(p)	; address
-	print(&p)	;??
+	print(*p) ; value*
+	print(p)	; address of now c
+	print(&p)	; address of actual pointer
 
 	How to setup wiring pi and piface libraries : ?? simply download and include"??
 	Missing up to date fourth year project code?? LOL
@@ -181,6 +184,188 @@ pwm.stop()
 GPIO.cleanup()
 
 end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+###**Processors**
+####**Models:**
+  - Von Neumann Model: Arithmetic and Logic unit (ALU), control unit (control signals), memory unit (holds data and program), input unit, and output unit.
+
+  - System Bus model 3: Microprocessor controls the system bus, which has the data, address, and control busses, and the I/O and memory systems use those busses.
+    - The Microprocessor controls the memory and I/O through the busses. 3 main tasks:
+      1. Data transfer: MOV, Push, Pop, IN, OUT
+      2. Arithmetic and logic: ADD, SUB, MUL.
+      3. Program flow: Branch, Jump. Flags.
+    - Types:
+      - General Purpose: Desktop - Intel
+      - GPU: Graphics Processing Unit - high throughput graphics processing
+      - DSP: Digital Signal Processors
+      - Microcontrollers: Entire computer on a single chip.
+
+    - Address Bus: N Address line can access 2^N locations:
+      - If N = 20 lines, then 1 M byte
+      - If 16 MB locations, then 2^4 * 2^20 means N = 24 lines.
+
+####**Registers:**
+  - Execution Unit (execution of program instructions) multipurpose registers:
+    - EAX: Accumulator: Used for arithmetic and logic operations. Destination for MUL and DIV
+    - EBX: Base Index: Usually used to hold offset address
+    - ECX: Count: Usually used to hold count value for instructions like loops and rotates.
+    - EDX: Data: temporary data storage for part of a result from multiplication or division (dividend, remainder)
+
+    - ESP Stack pointer: Used to offset into the stack segment to address the stack. PUSH/POP
+    - EBP Base pointer: Used to store a base memory location for data transfers
+    - EDI Destination Index: Usually used as an offset for the destination memory location for string/byte transfers
+    - ESI Source index: Usually used as an offset for the source memory location for string/byte transfers.
+
+    - Flag register: Certain bits for flags:
+      - C, carry flag
+      - P, parity
+      - A, auxiliary
+      - Z, zero result
+      - S, sign
+      - T, trap
+      - I, interrupt
+      - D, direction
+      - O, overflow; result exceeded
+        - indicates that result is too large to fit in the 8-bit destination operand:
+          Due to 2's complement
+            Signed
+          - the sum of two positive signed operands exceeds 127.
+          - the difference of two negative operands is less than -128.
+
+  - BIU (Bus Interface Unit) - provides interface to memory and I/O:
+    1. controls the address, data, and control busses.
+    2. handles instruction fetch and data read/write functions
+      - CS Code Segment: Used to compute the starting address of the section of memory holding code (restricted to 64K in REAL mode).
+
+      - DS Data Segment: Used to compute the starting address of the section of memory holding data (restricted to 64K in REAL mode).
+
+      - SS Stack Segment: Used to compute the starting address of the section of memory holding the stack (restricted to 64K in REAL mode).
+
+      - ES Extra Segment: Additional data segment used by some string instructions.
+
+      - FS&GS Additional segment registers in the 80386 (and up) for program use.
+
+  - Address Generation:
+    - Real Mode: the 8086/8088/186 can only operate in this mode)
+      - Allows the mP to address the first 1Mbyte of memory only.
+      The mP has a set of rules that apply whenever memory is addressed, which define the segment and offset register combination used by certain addressing modes.
+      ```
+      Segment |Offset                 |  Special Purpose
+      --------|-----------------------|------------------------------
+      CS      |  IP                   |  Instruction address
+      SS      |  SP or BP             |  Stack address
+      DS      |  BX,DI,SI,            |  Data address
+              |  8bit # or 16bit #    |
+      ES      | DI                    |  String destination
+              |(for string instruction)
+      ```
+    - Protected mode:
+      - This mode uses the segment register contents (called a selector) to access a descriptor from a descriptor table.
+
+####**Addressing Modes**
+  Effective Address (EA): The execution unit is responsible for the BIU which combines it with the segment register.
+
+  - Register Addressing:
+    - Data is in the registers specified in the instructions.
+    - eg: MOV AX,BX
+
+  - Immediate addressing:
+    - Data is a constant and is part of the instruction.
+    - eg: MOV AX,3AH
+
+  - Direct Addressing:
+    - The 16 bit effective address is part of the instruction.
+    - e.g. MOV BX,[1000H]
+
+  - Register indirect addressing (based addressing)
+    - the effective address is held in BP, BX, DI or SI.
+    - MOV BX,1000H
+      MOV AX,[BX]
+
+      ; AL ← DS x 10H + 1000H
+      ; AH ← DS x 10H + 1001H
+
+  - Register relative addressing (base + displacement)
+    - formed by the sum of a base or index register plus a displacement.
+    - MOV AX,[BX+4H]
+
+  - Base plus index addressing (base + index)
+    - effective address is formed as the sum of a base register (BP or BX) and an index register (DI or SI)
+    - MOV [BX+DI],CL
+
+  - base relative plus index addressing (base + displacement + index)
+    - effective address is the sum of base + index + displacement.
+    - MOV [BX+DI+8AH],CL
+
+####**I/O systems:**
+
+  Handshaking to guarantee transfer
+    1. VALID signal latches/strobes data into port
+    2. The STATUS bit is set by the VALID signal
+    3. mP reads the STATUS bit
+    4. mP reads DATA resets STATUS asserts ACK
+    5. Device sees ACK deasserts VALID prepares next data
+    6. Port deasserts ACK when VALID is deasserted
+
+  1. I/O mapped I/O (isolated I/O): I/O Ports are isolated from memory in a separate I/O address space. Data transfer from/to I/O is restricted to IN and OUT instructions. Separate control signals using M/IO, WR, RD enable I/O ports. Intel-based PC’s use isolated I/O.
+
+  2. Memory Mapped I/O: I/O device is treated as a memory location. Any memory transfer instruction can used to access the device. Reserves fixed portion(s) of the memory map for I/O.
+
+####**Interrupts: Special event requiring CPU to stop normal program execution and perform some service related to that event. Allows for asynchronous execution of service routines. An interrupt service procedure (ISP) is the interrupt.**
+
+  - A hardware interrupt is an electronic alerting signal sent to the processor from an external device, like a disk controller or an external peripheral. For example, when we press a key on the keyboard or move the mouse, they trigger hardware interrupts which cause the processor to read the keystroke or mouse position.
+    - caused by mP pins
+    - INTR – interrupt pin
+      - level sensitive
+      - must remain held by external device at logic 1 until INTA goes low
+      - usually reset within the interrupt service routine (ISR)
+    - NMI – non-maskable interrupt
+      - edge triggered.
+      - must be logic zero for two clock periods before positive edge.
+      - must remain held by external device at logic 1 until INTA goes low.
+      - Often used for parity errors, power failures and other major faults.
+
+  - A software interrupt is caused either by an exceptional condition or a special instruction in the instruction set which causes an interrupt when it is executed by the processor.
+    - INT n – specify interrupt type (32-255)
+    - INT 3 is special 1-byte case (useful for debugging)
+    - INTO – interrupt on overflow (‘O’ flag bit)
+    - BOUND – specify upper & lower bounds
+    - Divide by zero error
+```
+  Interrupted processing: doesn’t “know” it was interrupted
+    Processor:
+      - temporarily suspends current thread of control
+      - runs ISR
+      - resumes suspended thread of control
+
+  Polling: The state of continuous monitoring is known as polling. The microcontroller keeps checking the status of other devices; and while doing so, it does no other operation and consumes all its processing time for monitoring.
+    - sequential programming: next instruction determined by control transfer instructions.
+
+  Interrupts: device tells CPU it is time to do something … NOW.
+    - event-driven programming.  
+    - external hardware spontaneously cause control transfer (interruption in default program sequence).
+```
+  - For every interrupt, there must be an interrupt service routine (ISR), or interrupt handler. When an interrupt occurs, the microcontroller runs the interrupt service routine. For every interrupt, there is a fixed location in memory that holds the address of its interrupt service routine, ISR. The table of memory locations set aside to hold the addresses of ISRs is called as the Interrupt Vector Table.
+
+  - Level–sensitive: external interrupt generated as long as pin is high/low
+      Pros: multiple interrupt sources can be tied to this pin.
+      Cons: source must ensure line becomes inactive before IRQ’s ISR is complete if only one interrupt request pending.
+
+  - Edge-sensitive: external interrupt generated when pin changes (either high-low or low-high)
+      Pros: no need for interrupt source to control duration of IRQ pulse.
+      Cons: not suitable for noisy environment (falling edge caused by noise will be recognized as an interrupt).
+
+  - Interrupt Response Sequence
+    Each time the mP completes execution of an instruction, it will check the status of NMI and INTR.
+    - if either is active, or if the next instruction is INTO, INT n, or BOUND, then:
+      1. Push flag register onto stack.
+      2. Clear IF and TF (interrupt enable and trap flags). Interrupts are now disabled. (So an interrupt cannot be interrupted)
+      3. Push CS then IP on stack.
+      4. Fetch the interrupt vector: Each interrupt vector contains the address (segment and offset) of the service routine.
+      5. Proceed to the ISR; flush the instruction queue
+    - The final statement of an interrupt service routine (ISR) is IRET – it pops IP, CS and Flags.
+
+end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 ###**By Reference and value**
 When a parameter is passed by reference, the caller and the callee use the same variable for the parameter. If the callee modifies the parameter variable, the effect is visible to the caller's variable.
