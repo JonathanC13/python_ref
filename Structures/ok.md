@@ -572,7 +572,8 @@ Creating a new or duplicate process:
 		pid = fork(); // create child process.
 
 Creating a thread:
-```
+
+  ```
 	#include <pthread.h>
 
 	void *thread_function(void *arg);
@@ -598,6 +599,7 @@ Creating a thread:
 			exit(EXIT_FAILURE);
 		}
 	```
+  
 C semaphore:
 
 For one whole program
@@ -766,7 +768,7 @@ to any other process that has access to the same shared memory.
 			exit(1);
 		}
 		```
-    
+
 	shm_open() allows multiple un-related processes to access
 	the same shared memory - since it can be accessed by a well
 	know name.
