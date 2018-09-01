@@ -17,6 +17,36 @@ TO DO:
 	How to setup wiring pi and piface libraries : ?? simply download and include"??
 	Missing up to date fourth year project code?? LOL
 
+  - Difference between Java and C
+    - Java
+      - Interpreted Language: the code is translated to bytecode and is executed by the Java virtual machine, this makes Java code portable on different devices
+      - Object oriented
+        - Inheritance: Allows subclasses to be created from super classes that share a set of attributes and methods.
+        - encapsulation: Used for data hiding, the object has data and the functions it contains only deal with that data.
+        - abstraction: Used to only show relevant methods to reduce complexity for the user that wants to implement them. We use abstract classes and interfaces to just present the methods.
+        - polymorphism (is - a): This means any child class object can take any form of a class in its parent hierarchy and of course itself as well.
+          Ex. Person -> Teacher.
+            We can create
+              Person person = new Person(); //Person reference and object
+              Person another_person = new Teacher(); //Person reference, Teacher object
+              Teacher teacher = new Teacher(); //Teacher reference and obj.
+              - If the reference is higher in the hierarchy, then it can create any child object. We do this because some subclasses have overwritten methods that do different things.
+      - Garbage collection for unreferenced objects
+      ```
+      - No pointers, it has references, which is an alias variable for an already existing variable, it shares the same memory address, and cannot be re-assigned. One level of indirection and cannot reference NULL.
+      ```
+      - Method overloading: Same method name, but different parameters.
+      - Java uses exception handling, so you can catch and deal with it.
+
+    - C
+      - C is compiled, so it converts code into machine code representation which is understood by the processor. As long as the platform has a C compiler it is portable, but there is some code that is not portable. Like assuming a specific memory address is mapped to a hardware register and specific API (application programming interface) calls to the operating system.
+      - Procedural, executes in the order it was written.
+      - Need to manage memory with malloc and free or we risk memory leaks.
+      ```
+      - A pointer is a variable that holds the memory address of another variable, it can be re-assigned to point to another location, and you can perform arithmetic on pointers. Multiple levels of indirection and can point to NULL.
+      ```
+      - C, when there is an error it stops.
+
 ###**C exercises**
 
 ###**data structures**
@@ -186,6 +216,7 @@ GPIO.cleanup()
 end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 ###**Processors**
+
 ####**Models:**
   - Von Neumann Model: Arithmetic and Logic unit (ALU), control unit (control signals), memory unit (holds data and program), input unit, and output unit.
 
