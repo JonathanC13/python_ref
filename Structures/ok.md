@@ -565,7 +565,7 @@ For Python: if __name__ == "__main__":
 
 end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-###**Multithreading**
+###**Multithreading**###
 Creating a new or duplicate process:
 	- In Linux, use
 		pid_t pid;
@@ -602,6 +602,7 @@ C semaphore:
 
 For one whole program
 **Init:**
+
   ```
 	int res;
 
@@ -612,11 +613,15 @@ For one whole program
 		exit(EXIT_FAILURE);
 	}
   ```
+
 **decrement (wait):**
+
   ```
 	sem_wait(&bin_sem);// decrement by 1, if sem is 0 then it is blocked here
   ```
+
 **increment (signal):**
+
   ```
 	sem_post(&bin_sem); // increment by 1, if 0 it may unblock for another thread or process
   ```
@@ -627,7 +632,7 @@ If multiple programs with same semaphore (Like two processes using shared memory
 	int semop(int sem_id, struct sembuf *sem_ops, size_t num_sem_ops);
   ```
 
-###**Synchronization** for threads and processes that share a resource.
+###**Synchronization** for threads and processes that share a resource.###
 The OS can block the process/thread instead of doing a busy waiting in a loop for a shared resource, wasting CPU time on their processor.
 
 Try to satisfy:
@@ -652,16 +657,19 @@ address space of that process. Other processes can then “attach” the same sh
 their own address space. All processes can access the memory locations just as if the memory had been
 allocated by malloc . If one process writes to the shared memory, the changes immediately become visible
 to any other process that has access to the same shared memory.
-```
+
+  ```
 	#include <sys/shm.h>
 	void *shmat(int shm_id, const void *shm_addr, int shmflg);
 	int shmctl(int shm_id, int cmd, struct shmid_ds *buf);
 	int shmdt(const void *shm_addr);
 	int shmget(key_t key, size_t size, int shmflg);
-```
+  ```
+
 	Ex.
 	#include "shm_com.h"	// shared memory structure for both consumer and producer to use, has a flag within to indicate which process will continue. int written_by_you;
-```
+
+  ```
 	int running = 1;
 	void *shared_memory = (void *)0;
 	struct shared_use_st *shared_stuff;
@@ -696,10 +704,11 @@ to any other process that has access to the same shared memory.
 		exit(EXIT_FAILURE);
 	}
 
-```
+  ```
+
 	// If we need to use semaphores on shared memory we can either put the semaphore on in shared memory or share named POSIX semaphores.
 		1. share named POSIX semaphores
-    ```
+      ```
 			//Choose a name for your semaphore
 			#define SNAME "/mysem"
 
@@ -714,7 +723,9 @@ to any other process that has access to the same shared memory.
 		// then in the other process open the semaphore so it can use it.
 		sem_t *sem = sem_open(SEM_NAME, 0); /* Open a preexisting semaphore. */
 		```
+
 		2. Shared
+
 		```
 		#include        <stdio.h>
 		#include        <limits.h>
@@ -755,6 +766,7 @@ to any other process that has access to the same shared memory.
 			exit(1);
 		}
 		```
+    
 	shm_open() allows multiple un-related processes to access
 	the same shared memory - since it can be accessed by a well
 	know name.
