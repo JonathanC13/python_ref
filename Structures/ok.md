@@ -602,7 +602,7 @@ C semaphore:
 
 For one whole program
 **Init:**
-```
+  ```
 	int res;
 
 	// int sem_init(sem_t *sem, int pshared, unsigned int value); if 0 it is shared among threads, if pshared is non-zero means shared with multiple processes so need a shared memory location.
@@ -611,21 +611,21 @@ For one whole program
 		perror("Semaphore initialization failed.\n");
 		exit(EXIT_FAILURE);
 	}
-```
+  ```
 **decrement (wait):**
-```
+  ```
 	sem_wait(&bin_sem);// decrement by 1, if sem is 0 then it is blocked here
-```
+  ```
 **increment (signal):**
-```
+  ```
 	sem_post(&bin_sem); // increment by 1, if 0 it may unblock for another thread or process
-```
+  ```
 If multiple programs with same semaphore (Like two processes using shared memory), then need to use:
-```
+  ```
 	int semctl(int sem_id, int sem_num, int command, ...);
 	int semget(key_t key, int num_sems, int sem_flags);
 	int semop(int sem_id, struct sembuf *sem_ops, size_t num_sem_ops);
-```
+  ```
 
 ###**Synchronization** for threads and processes that share a resource.
 The OS can block the process/thread instead of doing a busy waiting in a loop for a shared resource, wasting CPU time on their processor.
