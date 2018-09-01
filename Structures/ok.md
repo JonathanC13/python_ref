@@ -396,6 +396,9 @@ end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
       5. Proceed to the ISR; flush the instruction queue
     - The final statement of an interrupt service routine (ISR) is IRET – it pops IP, CS and Flags.
 
+  Applications:
+    - If a sensor read high, it just reset a counter
+
 end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 ###**By Reference and value**
@@ -561,6 +564,47 @@ For Python: if __name__ == "__main__":
 	One reason for doing this is that sometimes you write a module (a .py file) where it can be executed directly. Alternatively, it can also be imported and used in another module. By doing the main check, you can have that code only execute when you want to run the module as a program and not have it execute when someone just wants to import your module and call your functions themselves.
 
 end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+###**Multithreading**
+Create Threads and processes in C: 4001 lab
+
+###**Synchronization** for threads and processes that share a resource.
+The OS can block the process/thread instead of doing a busy waiting in a loop for a shared resource, wasting CPU time on their processor.
+
+Try to satisfy:
+  - Mutual exclusion: only one thread is in its critical section at a time.
+	- Progress
+	- Bounded wait: Guarantees all processes can enter the critical section. Picked from blocked queue.
+	- Fairness: If only one process needs to enter the critical section then it should be able to do it immediately.
+
+
+  - General Semaphores: An integer used for signaling for processes and there are only 3 operations; initialize, decrement (may block a process, wait()), and increment (may unblock a process, signal()).
+    - Strong: The process blocked the longest is released from the queue first (FIFO). Guarantees no starvation.
+    - Weak: order removed from blocked queue not specified.
+
+  - Mutex: is a lock and the processes that locked the mutex must be the one to unlock it.
+
+  - Inter-process communications (IPC): 4001 lab
+
+In Java:
+  - Synchronization
+  Use 'synchronized' keyword to only allow one thread to access a method or data structure / object at one time.
+
+  - Multithreading
+  1. public void run(); // So when we do thread.start() it executes this method.
+  2. Thread(Runnable threadObj, String threadName); // Create the thread with the object that has a runnable interface.
+  3. thread.start(); // to call the run() method.
+
+  - Rate monotonic scheduling
+  - Cyclic Executive
+
+
+###**Network programming**
+  - Sockets? packets?
+
+###**Testing**
+- Application Under Test (AUT)
+- Unit testing, white box testing (data coverage, code coverage), black box testing (input testing)
 
 ###**Projects:**
 RPI: Touch screen
