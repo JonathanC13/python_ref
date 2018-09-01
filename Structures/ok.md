@@ -601,7 +601,7 @@ Creating a thread:
 C semaphore:
 
 For one whole program
-- Init:
+**Init:**
 ```
 	int res;
 
@@ -612,11 +612,11 @@ For one whole program
 		exit(EXIT_FAILURE);
 	}
 ```
-- decrement (wait):
+**decrement (wait):**
 ```
 	sem_wait(&bin_sem);// decrement by 1, if sem is 0 then it is blocked here
 ```
-- increment (signal):
+**increment (signal):**
 ```
 	sem_post(&bin_sem); // increment by 1, if 0 it may unblock for another thread or process
 ```
