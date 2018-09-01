@@ -567,18 +567,18 @@ end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 ###**Multithreading**
 Creating a new or duplicate process:
-	- In Linux, use 
+	- In Linux, use
 		pid_t pid;
 		pid = fork(); // create child process.
-		
-Creating a thread:
 
+Creating a thread:
+```
 	#include <pthread.h>
 
 	void *thread_function(void *arg);
 
 	int main()
-	
+
 		int result;
 		pthread_t a_thread;
 		void *thread_result;
@@ -590,38 +590,42 @@ Creating a thread:
 			perror("Thread creation failed.");
 			exit(EXIT_FAILURE);
 		}
-		
+
 		printf("\n waiting for thread to finish . . .\n");
 		res = pthread_join(a_thread, &thread_result);
 		if (res != 0){
 			perror("thread join failed\n");
 			exit(EXIT_FAILURE);
 		}
-	
+	```
 C semaphore:
 
 For one whole program
 - Init:
+```
 	int res;
-	
+
 	// int sem_init(sem_t *sem, int pshared, unsigned int value); if 0 it is shared among threads, if pshared is non-zero means shared with multiple processes so need a shared memory location.
 	res = sem_init(&bin_sem, 0, 0);	// 2nd arg is scope
 	if (res != 0){
 		perror("Semaphore initialization failed.\n");
 		exit(EXIT_FAILURE);
 	}
-	
+```
 - decrement (wait):
+```
 	sem_wait(&bin_sem);// decrement by 1, if sem is 0 then it is blocked here
-	
+```
 - increment (signal):
+```
 	sem_post(&bin_sem); // increment by 1, if 0 it may unblock for another thread or process
-	
+```
 If multiple programs with same semaphore (Like two processes using shared memory), then need to use:
+```
 	int semctl(int sem_id, int sem_num, int command, ...);
 	int semget(key_t key, int num_sems, int sem_flags);
 	int semop(int sem_id, struct sembuf *sem_ops, size_t num_sem_ops);
-
+```
 
 ###**Synchronization** for threads and processes that share a resource.
 The OS can block the process/thread instead of doing a busy waiting in a loop for a shared resource, wasting CPU time on their processor.
@@ -641,76 +645,77 @@ Try to satisfy:
 
   - Inter-process communications (IPC) facilities:
   	1. Sharing common sempaphore
-	2. Shared memory: It allows two unrelated processes to access the
+	  2. Shared memory: It allows two unrelated processes to access the
 same logical memory. Shared memory is a very efficient way of transferring data between two running
 processes. A special range of addresses that is created by IPC for one process and appears in the
 address space of that process. Other processes can then “attach” the same shared memory segment into
 their own address space. All processes can access the memory locations just as if the memory had been
 allocated by malloc . If one process writes to the shared memory, the changes immediately become visible
 to any other process that has access to the same shared memory.
-
+```
 	#include <sys/shm.h>
 	void *shmat(int shm_id, const void *shm_addr, int shmflg);
 	int shmctl(int shm_id, int cmd, struct shmid_ds *buf);
 	int shmdt(const void *shm_addr);
 	int shmget(key_t key, size_t size, int shmflg);
-	
+```
 	Ex.
 	#include "shm_com.h"	// shared memory structure for both consumer and producer to use, has a flag within to indicate which process will continue. int written_by_you;
-	
+```
 	int running = 1;
 	void *shared_memory = (void *)0;
 	struct shared_use_st *shared_stuff;
 	int shmid;
-	
+
 	srand((unsigned int)getpid());	// seed for random. next = getpid() value
 
 	// create, returns unique id
-	shmid = shmget((key_t)1234, sizeof(struct shared_use_st), 0666 | IPC_CREAT);	// 
-	
+	shmid = shmget((key_t)1234, sizeof(struct shared_use_st), 0666 | IPC_CREAT);	//
+
 	if(shmid == -1){
 		fprintf(stderr, "shmget failed\n");
 		exit(EXIT_FAILURE);
 	}
-	
+
 	// attach
 	shared_memory = shmat(shmid, (void*)0, 0);	//attach the shared memory to shmid. Returns pointer to the first byte of the shared memory
 	if (shared_memory == (void*)-1){
 		fprintf(stderr, "shmat failed\n");
 		exit(EXIT_FAILURE);
 	}
-	
+
 	// after finished, detach from shared memory
 	if (shmdt(shared_memory) == -1){
 		fprintf(stderr, "shmdt failed\n");
 		exit(EXIT_FAILURE);
-	}	
-	
+	}
+
 	// Delete the shared memory since this is the creator
 	if(shmctl(shmid, IPC_RMID, 0) == -1){
 		fprintf(stderr,"shmctl(IPC_RMID) failed\n");
 		exit(EXIT_FAILURE);
 	}
-	
-	
+
+```
 	// If we need to use semaphores on shared memory we can either put the semaphore on in shared memory or share named POSIX semaphores.
 		1. share named POSIX semaphores
+    ```
 			//Choose a name for your semaphore
 			#define SNAME "/mysem"
-			
+
 			//Use sem_open with O_CREAT in the process that creates them
 			sem_t *sem = sem_open(SNAME, O_CREAT, 0644, 3); /* Initial value is 3. */
 			errno=0;  /* <---- This is an important thing I learned when using errno. */
-			if ((sem_t *semaphore = sem_open("/sem1", O_CREAT | O_EXCL, 0644, 0)) == SEM_FAILED) 
+			if ((sem_t *semaphore = sem_open("/sem1", O_CREAT | O_EXCL, 0644, 0)) == SEM_FAILED)
 			   {
 			   fprintf(stderr, "sem_open() failed.  errno:%d\n", errno);
 			   ...
-			   
+
 		// then in the other process open the semaphore so it can use it.
 		sem_t *sem = sem_open(SEM_NAME, 0); /* Open a preexisting semaphore. */
-		
-		2. Shared 
-		
+		```
+		2. Shared
+		```
 		#include        <stdio.h>
 		#include        <limits.h>
 		#include        <stdlib.h>
@@ -720,14 +725,14 @@ to any other process that has access to the same shared memory.
 		#include        <sys/mman.h>
 		#include        <sys/stat.h>
 		#include        <fcntl.h>
-		
+
 		shm();
 		int fd;
 		void *sem_id;
 		int num = 1;
 		int err;
 		size_t large = sizeof(sem_t);
-	
+
 		if ((fd = shm_open("SHARE_MEMORY", O_CREAT | O_TRUNC | O_RDWR, 0666)) < 0) {
 			perror("shm_open error ");
 			exit(EXIT_FAILURE);
@@ -749,7 +754,7 @@ to any other process that has access to the same shared memory.
 			perror("sem_init error");
 			exit(1);
 		}
-		
+		```
 	shm_open() allows multiple un-related processes to access
 	the same shared memory - since it can be accessed by a well
 	know name.
@@ -763,7 +768,7 @@ to any other process that has access to the same shared memory.
 	if the creating process only needs to share the memory with
 	child processes created via fork(), then shmget() is ok;
 	otherwise, shm_open() is often used.
-	
+
 	3. Message Queues
 
 In Java:
