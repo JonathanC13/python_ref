@@ -17,6 +17,7 @@ TO DO:
 	How to setup wiring pi and piface libraries : ?? simply download and include"??
 	Missing up to date fourth year project code?? LOL
 
+###**Gen Dy 1. Explain a few significant differences between the C++ and Java programming languages.**
   - Difference between Java and C
     - Java
       - Interpreted Language: the code is translated to bytecode and is executed by the Java virtual machine, this makes Java code portable on different devices
@@ -46,6 +47,16 @@ TO DO:
       - A pointer is a variable that holds the memory address of another variable, it can be re-assigned to point to another location, and you can perform arithmetic on pointers. Multiple levels of indirection and can point to NULL.
       ```
       - C, when there is an error it stops.
+
+###**Gen Dy 2. Pick a project that you can discuss in detail and had a significant role on. Discuss the system design/architecture. What was the worst problem you had with this system and how did you fix it?**
+
+###**Gen Dy 3. How much reuse do you get out of the code you develop?**
+
+
+###**Gen Dy 4. Explain a time when you were able to improve upon the design that was originally requested.**
+
+###**Gen Dy 5. Do you want to stay on a technical career path or eventually move to a leadership/management role?**
+
 
 ###**C exercises**
 
@@ -599,7 +610,7 @@ Creating a thread:
 			exit(EXIT_FAILURE);
 		}
 	```
-  
+
 C semaphore:
 
 For one whole program
