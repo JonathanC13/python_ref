@@ -1,3 +1,27 @@
+####**Leonardo DRS**
+C / Java
+
+experience in software projects involving embedded software design and integration
+
+Multitasking/multithreading, synchronization concepts (semaphores, mutexes, inter-processor communications), ISR, Interrupt handle
+
+TCP/IP, UDP
+
+Object Oriented
+
+computer architecture
+
+data structures
+
+standard programming practices
+
+testing
+
+agile scrum
+
+end \\\\\\\\\\\\\\\\
+
+
 TO DO:
 	String manipulation and Searching/sorting algorithms code and by hand
 	memorize pin calling in RPI
@@ -188,6 +212,8 @@ end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 ###**Processors**
 
+###**ARM**
+
 ####**Models:**
   - Von Neumann Model: Arithmetic and Logic unit (ALU), control unit (control signals), memory unit (holds data and program), input unit, and output unit.
 
@@ -333,7 +359,8 @@ end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     - INTO – interrupt on overflow (‘O’ flag bit)
     - BOUND – specify upper & lower bounds
     - Divide by zero error
-```
+    ---
+  ```
   Interrupted processing: doesn’t “know” it was interrupted
     Processor:
       - temporarily suspends current thread of control
@@ -346,7 +373,8 @@ end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
   Interrupts: device tells CPU it is time to do something … NOW.
     - event-driven programming.  
     - external hardware spontaneously cause control transfer (interruption in default program sequence).
-```
+  ```
+  ---
   - For every interrupt, there must be an interrupt service routine (ISR), or interrupt handler. When an interrupt occurs, the microcontroller runs the interrupt service routine. For every interrupt, there is a fixed location in memory that holds the address of its interrupt service routine, ISR. The table of memory locations set aside to hold the addresses of ISRs is called as the Interrupt Vector Table.
 
   - Level–sensitive: external interrupt generated as long as pin is high/low
@@ -536,14 +564,50 @@ For Python: if __name__ == "__main__":
 
 end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
-###**Multithreading**###
-Creating a new or duplicate process:
+###**Multithreading**
+####**Process vs Threads**
+Creating a Process is slower due to the child is a duplicate of the parent and has its own allocated memory and stack. Takes time to copy. Almost 2 times slower than thread creation.
+  N CPUs, processes in running state is maximum N.
+  Benefits
+  - No risk of data corruption between processes
+  - A crash in one process doesn't affect others
+
+  Cons
+  - Need to Mode switch to kernel to be able to Context switch (suspend one process and then retrieving the next process)
+
+Threads share the same memory addresses, that’s why we need synchronization to avoid problems
+  Benefits
+  - Faster creation and termination
+  - switching is faster due to no Mode switch
+  - Single process can have multiple threads
+
+  cons
+  - A crash in a thread may crash the entire process.
+  - Have to synchronize
+
+    User Level threads
+    Pro
+    - Scheduling can be application specific
+    - Thread switching does not require kernel mode privileges
+
+    Cons
+    - A system call from one thread may block all the threads.
+
+    Kernel Level threads
+    Pros
+    - Management done by kernel
+    - Threads can be run on multiple processors
+
+    Cons
+    - Need mode switch to control another thread.
+
+####**Creating a new or duplicate process:**
 	- In Linux, use
 		pid_t pid;
 		pid = fork(); // create child process.
 
-Creating a thread:
-
+####**Creating a thread:**
+---
   ```
 	#include <pthread.h>
 
@@ -570,12 +634,12 @@ Creating a thread:
 			exit(EXIT_FAILURE);
 		}
 	```
+---
+####**C semaphore:**
 
-C semaphore:
-
-For one whole program
+1. For one whole program
 **Init:**
-
+---
   ```
 	int res;
 
@@ -586,26 +650,31 @@ For one whole program
 		exit(EXIT_FAILURE);
 	}
   ```
-
+---
 **decrement (wait):**
-
+---
   ```
 	sem_wait(&bin_sem);// decrement by 1, if sem is 0 then it is blocked here
   ```
-
+---
 **increment (signal):**
-
+---
   ```
 	sem_post(&bin_sem); // increment by 1, if 0 it may unblock for another thread or process
   ```
-If multiple programs with same semaphore (Like two processes using shared memory), then need to use:
+---
+2. If across multiple files. Include the file and use 'extern sem_t semaphore'
+
+
+3. If multiple programs with same semaphore (Like two processes using shared memory), then need to use:
+---
   ```
 	int semctl(int sem_id, int sem_num, int command, ...);
 	int semget(key_t key, int num_sems, int sem_flags);
 	int semop(int sem_id, struct sembuf *sem_ops, size_t num_sem_ops);
   ```
-
-###**Synchronization** for threads and processes that share a resource.###
+---
+###**Synchronization** for threads and processes that share a resource.
 The OS can block the process/thread instead of doing a busy waiting in a loop for a shared resource, wasting CPU time on their processor.
 
 Try to satisfy:
@@ -622,7 +691,7 @@ Try to satisfy:
   - Mutex: is a lock and the processes that locked the mutex must be the one to unlock it.
 
   - Inter-process communications (IPC) facilities:
-  	1. Sharing common sempaphore
+  	1. Sharing common semaphore
 	  2. Shared memory: It allows two unrelated processes to access the
 same logical memory. Shared memory is a very efficient way of transferring data between two running
 processes. A special range of addresses that is created by IPC for one process and appears in the
@@ -630,7 +699,7 @@ address space of that process. Other processes can then “attach” the same sh
 their own address space. All processes can access the memory locations just as if the memory had been
 allocated by malloc . If one process writes to the shared memory, the changes immediately become visible
 to any other process that has access to the same shared memory.
-
+---
   ```
 	#include <sys/shm.h>
 	void *shmat(int shm_id, const void *shm_addr, int shmflg);
@@ -638,10 +707,10 @@ to any other process that has access to the same shared memory.
 	int shmdt(const void *shm_addr);
 	int shmget(key_t key, size_t size, int shmflg);
   ```
-
+---
 	Ex.
 	#include "shm_com.h"	// shared memory structure for both consumer and producer to use, has a flag within to indicate which process will continue. int written_by_you;
-
+---
   ```
 	int running = 1;
 	void *shared_memory = (void *)0;
@@ -678,9 +747,10 @@ to any other process that has access to the same shared memory.
 	}
 
   ```
-
+---
 	// If we need to use semaphores on shared memory we can either put the semaphore on in shared memory or share named POSIX semaphores.
 		1. share named POSIX semaphores
+    ---
       ```
 			//Choose a name for your semaphore
 			#define SNAME "/mysem"
@@ -696,9 +766,9 @@ to any other process that has access to the same shared memory.
 		// then in the other process open the semaphore so it can use it.
 		sem_t *sem = sem_open(SEM_NAME, 0); /* Open a preexisting semaphore. */
 		```
-
+    ---
 		2. Shared
-
+---
 		```
 		#include        <stdio.h>
 		#include        <limits.h>
@@ -739,7 +809,7 @@ to any other process that has access to the same shared memory.
 			exit(1);
 		}
 		```
-
+---
 	shm_open() allows multiple un-related processes to access
 	the same shared memory - since it can be accessed by a well
 	know name.
@@ -770,13 +840,69 @@ In Java:
 
 
 ###**Network programming**
-  - Sockets? packets?
+  - TCP / IP:
+    Transmission Control Protocol: Connection-oriented (Handshaking), point to point, reliable (in order), flow and congestion control, full duplex.
+
+    The Model
+    1. The application layer provides applications with standardized data exchange. Its protocols include the Hypertext Transfer Protocol (HTTP), File Transfer Protocol (FTP), Post Office Protocol 3 (POP3), Simple Mail Transfer Protocol (SMTP) and Simple Network Management Protocol (SNMP).
+
+    2. The transport layer is responsible for maintaining end-to-end communications across the network. TCP handles communications between hosts and provides flow control, multiplexing and reliability. The transport protocols include TCP and User Datagram Protocol (UDP), which is sometimes used instead of TCP for special purposes.
+
+    3. The network layer, also called the internet layer, deals with packets and connects independent networks to transport the packets across network boundaries. The network layer protocols are the IP and the Internet Control Message Protocol (ICMP), which is used for error reporting.
+
+    4. The physical layer consists of protocols that operate only on a link -- the network component that interconnects nodes or hosts in the network. The protocols in this layer include Ethernet for local area networks (LANs) and the Address Resolution Protocol (ARP).
+
+  - User Datagram protocol (UDP): Connectionless data transfer, has error checking with checksum, etc.
+    java
+      ---
+      ```
+      byte[] sendBuf;
+      int sendLen;
+
+      InetAddress remoteIpAddress;
+	    int remotePort;
+
+      DatagramPacket packet = null;
+
+      //DatagramPacket(byte[] buf, int length, InetAddress address, int port)
+      packet = new DatagramPacket(sendBuf, sendLen + 4, remoteIpAddress, remotePort);
+			rcvHanlder.transferSocket.send(packet);
+      ```
+      ---
 
 ###**Testing**
 - Application Under Test (AUT)
 - Unit testing, white box testing (data coverage, code coverage), black box testing (input testing)
 
+###**Standard Programming Practices**
+  - Clear definition, High cohesion (class does has clear goal.)
+  - Low coupling between modules.
+  - Encapsulation: The module has data and the functions it contains only deal with that data.
+  - Simple to use
+  - Readability
+  - Testability
+
+###**GUI design**
+
+
+###**Agile**
+####**Scrum sprints ~ 2 weeks**
+Daily meetings and stating:
+  1. What's been done
+  2. What to do
+  3. Issues
+
+It is meant to be adaptive to customers changing their requirements
+
 ###**Projects:**
-RPI: Touch screen
-Arduino: maze robot: Based on sensor data from detecting the line in a line maze or walls in a wall maze the motor behaviour changed to navigate the robot.
+####**RPI: Touch screen**
+  The project was a system that helped tourist find locations of interest in a city, and my part was to create a touch screen kiosk that hosted the application so people without internet access could use it. I used a raspberry pi and created the circuits that enabled touch screen surface with infrared. To test and visualize if the correct location was touched on the screen, I wrote a visual studio application that received the intercept and showed which lines were being blocked to cause the intercept. (operation, 1 column of infrared emitters on one side of the screen and a column of infrared transistors on the other to create a touch screen area in between. The main idea is to have a single emitter on at a time and all the sensors would check if they can detect the ON emitter. If it doesn’t it means something is in the way. After cycling through the emitters, it will check if an intercept can be calculated.
+
+####**Arduino: maze robot:**
+  Based on sensor data from detecting the line in a line maze or walls in a wall maze the motor behaviour changed to navigate the robot.
+
 	LED globe: Persistance of vision illusion. Spin the 2D array of LEDs fast enough, 30 frames per second, it creates the illusion of a solid image when the LEDs and motor are synced.
+
+####**TFTP**
+
+  The server was multithreaded to handle multiple requests in parallel, it handled read and write requests and had error handling for incorrect packets, like wrong block number (for ack and data) or wrong transfer ID and network errors. TFTP used UDP datagrams and added reliability like handshaking and in order transfers. (Testing was with microsoft’s TFTP client to test the server, to test the whole system with the group’s client was using an error simulator in the middle that would simulate packet and network errors like (duplicate, drops).
