@@ -359,7 +359,7 @@ end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     - INTO – interrupt on overflow (‘O’ flag bit)
     - BOUND – specify upper & lower bounds
     - Divide by zero error
-    ---
+    
   ```
   Interrupted processing: doesn’t “know” it was interrupted
     Processor:
@@ -374,7 +374,7 @@ end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     - event-driven programming.  
     - external hardware spontaneously cause control transfer (interruption in default program sequence).
   ```
-  ---
+  
   - For every interrupt, there must be an interrupt service routine (ISR), or interrupt handler. When an interrupt occurs, the microcontroller runs the interrupt service routine. For every interrupt, there is a fixed location in memory that holds the address of its interrupt service routine, ISR. The table of memory locations set aside to hold the addresses of ISRs is called as the Interrupt Vector Table.
 
   - Level–sensitive: external interrupt generated as long as pin is high/low
@@ -607,8 +607,8 @@ Threads share the same memory addresses, that’s why we need synchronization to
 		pid = fork(); // create child process.
 
 ####**Creating a thread:**
----
-  ```
+
+```
 	#include <pthread.h>
 
 	void *thread_function(void *arg);
@@ -633,14 +633,14 @@ Threads share the same memory addresses, that’s why we need synchronization to
 			perror("thread join failed\n");
 			exit(EXIT_FAILURE);
 		}
-	```
----
+```
+
 ####**C semaphore:**
 
 1. For one whole program
 **Init:**
----
-  ```
+
+```
 	int res;
 
 	// int sem_init(sem_t *sem, int pshared, unsigned int value); if 0 it is shared among threads, if pshared is non-zero means shared with multiple processes so need a shared memory location.
@@ -649,31 +649,31 @@ Threads share the same memory addresses, that’s why we need synchronization to
 		perror("Semaphore initialization failed.\n");
 		exit(EXIT_FAILURE);
 	}
-  ```
----
+ ```
+
 **decrement (wait):**
----
-  ```
+
+```
 	sem_wait(&bin_sem);// decrement by 1, if sem is 0 then it is blocked here
-  ```
----
+```
+
 **increment (signal):**
----
-  ```
+
+```
 	sem_post(&bin_sem); // increment by 1, if 0 it may unblock for another thread or process
-  ```
----
+```
+
 2. If across multiple files. Include the file and use 'extern sem_t semaphore'
 
 
 3. If multiple programs with same semaphore (Like two processes using shared memory), then need to use:
----
-  ```
+
+```
 	int semctl(int sem_id, int sem_num, int command, ...);
 	int semget(key_t key, int num_sems, int sem_flags);
 	int semop(int sem_id, struct sembuf *sem_ops, size_t num_sem_ops);
-  ```
----
+```
+
 ###**Synchronization** for threads and processes that share a resource.
 The OS can block the process/thread instead of doing a busy waiting in a loop for a shared resource, wasting CPU time on their processor.
 
@@ -699,18 +699,18 @@ address space of that process. Other processes can then “attach” the same sh
 their own address space. All processes can access the memory locations just as if the memory had been
 allocated by malloc . If one process writes to the shared memory, the changes immediately become visible
 to any other process that has access to the same shared memory.
----
-  ```
+
+```
 	#include <sys/shm.h>
 	void *shmat(int shm_id, const void *shm_addr, int shmflg);
 	int shmctl(int shm_id, int cmd, struct shmid_ds *buf);
 	int shmdt(const void *shm_addr);
 	int shmget(key_t key, size_t size, int shmflg);
-  ```
+ ```
 ---
 	Ex.
 	#include "shm_com.h"	// shared memory structure for both consumer and producer to use, has a flag within to indicate which process will continue. int written_by_you;
----
+
   ```
 	int running = 1;
 	void *shared_memory = (void *)0;
@@ -733,6 +733,16 @@ to any other process that has access to the same shared memory.
 		fprintf(stderr, "shmat failed\n");
 		exit(EXIT_FAILURE);
 	}
+	
+	
+	printf("Memory attached at %X\n", (int)shared_memory);
+
+	// assign shared_memory to shared stuff. USE IT
+	shared_stuff = (struct shared_use_st *)shared_memory;	//point to first byte
+	shared_stuff->written_by_you = 0;
+	strncpy(shared_stuff->some_text, buffer, TEXT_SZ); // buffer to some_text
+	
+	
 
 	// after finished, detach from shared memory
 	if (shmdt(shared_memory) == -1){
