@@ -1,23 +1,163 @@
 ####**Leonardo DRS**
 C / Java
+  - Differences
+    - Object Oriented
+
 
 experience in software projects involving embedded software design and integration
+- Touch screen
+- Robot maze
+- LED globe
 
-Multitasking/multithreading, synchronization concepts (semaphores, mutexes, inter-processor communications), ISR, Interrupt handle
+Multitasking/multithreading (Processes and threads), synchronization concepts (semaphores, mutexes, inter-processor communications), ISR, Interrupt handle
+  - Hand write producer/cons and reader/writer.
+
+VoIP:
+  Use IP to carry voice for telephone calls. I don't know much of the technical aspects, just some overall elements it needs to operate like:
+    1. Signaling: capability to generate and exchange control information that will be used to establish, monitor, and release connections between two end-points. including H.323, Session Initiation Protocol (SIP), H.248, Media Gateway Control Protocol (MGCP), and Skinny Client Control Protocol (SCCP)
+    2. Database services for extra services like caller ID.
+    3. Codecs: coding and decoding translation between analog and digital facilities
+    4. Bearer control: Bearer channels are the channels that carry voice calls. Proper supervision of these channels requires that appropriate call connect and call disconnect signaling be passed between end devices. Correct signaling ensures that the channel is allocated to the current voice call and that a channel is properly deallocated when either side terminates the call.
+
+    Benefits:
+      - Dynamic call routing
+      - Long distance calls by pass
+      - Security encryption and availability.
+      - User portability
+
+    Cons: technical challenges.
+      - Delays degrade voice quality, high ping is noticeable
+      - Network jitter, packet arrival gaps
+      - Security of network.
+      - Existing NAT (network address translation) may not translate to the correct private IP.
 
 TCP/IP, UDP
+  Transmission Control Protocol: Connection-oriented (Handshaking), point to point, reliable (in order), flow and congestion control, full duplex.
 
-Object Oriented
+  The Model
+  1. The application layer provides applications with standardized data exchange. Its protocols include the Hypertext Transfer Protocol (HTTP), File Transfer Protocol (FTP), Post Office Protocol 3 (POP3), Simple Mail Transfer Protocol (SMTP) and Simple Network Management Protocol (SNMP).
+
+  2. The transport layer is responsible for maintaining end-to-end communications across the network. TCP handles communications between hosts and provides flow control, multiplexing and reliability. The transport protocols include TCP and User Datagram Protocol (UDP), which is sometimes used instead of TCP for special purposes.
+
+  3. The network layer, also called the internet layer, deals with packets and connects independent networks to transport the packets across network boundaries. The network layer protocols are the IP and the Internet Control Message Protocol (ICMP), which is used for error reporting.
+
+  4. The physical layer consists of protocols that operate only on a link -- the network component that interconnects nodes or hosts in the network. The protocols in this layer include Ethernet for local area networks (LANs) and the Address Resolution Protocol (ARP).
+
+  - User Datagram protocol (UDP): Connectionless data transfer, has error checking with checksum, etc.
+  java
+
+    ```
+    byte[] sendBuf;
+    int sendLen;
+
+    InetAddress remoteIpAddress;
+    int remotePort;
+
+    DatagramPacket packet = null;
+
+    //DatagramPacket(byte[] buf, int length, InetAddress address, int port)
+    packet = new DatagramPacket(sendBuf, sendLen + 4, remoteIpAddress, remotePort);
+    rcvHanlder.transferSocket.send(packet);
+    ```
+
+    **Summary**
+    I took an elective in computer communications that taught the concepts and functions of each layer. I know that TCP/IP is a communication model used to connect devices to the internet. The layers are Application, Transport, Network, and physical/link.
+
+    TCP (Transmission Control Protocol), is responsible for Connection-oriented (Handshaking), point to point, reliable (in order), flow and congestion control, and being full duplex. **Transport layer.**
+    IP, is the addresses for each host to uniquely identify it. This enables routing and packet forwarding. **Network layer.**
+
+    I also had experience using UDP datagrams in a project to implement TFTP (Trivial File transfer protocol). (used for reliable transferring of files; Handshaking)
+
+    3. It provides host to host communication services (end to end), also responsible for the management of error correction, providing quality and reliability to the end user and it also allows multiplexing (many users share a medium bursty data, requires mux/demux).
+      - TCP (Transmission Control Protocol), is responsible for Connection-oriented (Handshaking), point to point, reliable (in order), flow and congestion control, and being full duplex.
+        - Flow control is traffic at the receiver buffer
+        - Congestion control is traffic in the network, detected with packets dropped.
+      - User Datagram protocol (UDP): Connectionless data transfer, has error checking with checksum
+
+    2. Network layer in every host and router, it has 2 key functions:
+      - Packet forwarding to the correct output at each router.
+      - Determining the route taken by the packet from the source to destination.
+        Distance Vector:
+          - Nodes have information for neighbors, local info globally
+          - Good for large networks since exchange is to neighbors. In link state flooding could be expensive.
+        Link state:
+          - Routers have complete topology, global info locally.
+          - Supports multiple paths to Destination
+          - Fast reaction to a failure on a link.
+
+        Failure in link:
+          Solution:
+            - Split horizon: do not report route to destination to the node it learned it from
+            - Poisoned reverse: report infinite to the node it learned the route from.
+
+      - Address resolution protocol (ARP): Maps IP and MAC addresses to be able to send the datagram to the correct destination. Every host has an ARP table and is self learning if doesn't know.
+
+      Can provide connectionless Datagram networks, (packets may take different paths) which doesn’t require an end to end connection (uses look up table to determine the next hop), or Connection oriented networks (signaling protocols for setup, maintain, and tear down virtual circuit) like Multiprotocol label switching.
+
+    1. PHY layer: The physical layer deals with bit-level transmission between different devices, it connects different interfaces (electrical and/ mechanical) to the physical medium to support synchronized communication.
+      Physical media:
+        Coaxial cable, Fiber optic
+      Multiplexing:
+        Time Division multiplexing
+        OFDM: Orthogonal
+        Frequency Division Multiplexing
+        Wavelength Division multiplexing
+        Code Division Multiplexing.
+
+      Data link layer: Has the responsibility of transferring datagrams from one node to an adjacent node in the network. It provides framing, link access, reliable delivery, flow control, error detection, error correction, and duplexing. Ethernet or ppp.
+
+        Includes:
+        Medium access control layer (MAC): controls access to the medium through CSMA/CD. Also determines where one frame of data ends and the next one starts – frame synchronization. There are four means of frame synchronization: time based, character counting, byte stuffing and bit stuffing.
 
 computer architecture
+  **ARM**
+    Intro to ARM processor (Advanced RISC (Reduced instruction set computer) Machine) where the chip is smaller, lower power consumption, and higher speed due to better pipelining by adding stages and trying to have them take equal duration (fetch and execution).
+      - Fetch instruction (FI)
+      - Decode instruction (DI)
+      - Calculate operand (CO)
+      - Fetch operand (FO)
+      - Execute instruction (EI)
+      - Write operand (WO)
+
+        Hazards: Non identical duration means waiting for other stages, branching and interrupts invalidate fetching, memory conflicts
+    Features:
+    1. fixed instruction lengths (usually 4 bytes);
+    2. simple addressing modes (no indirect);
+    3. register/register operations (load and store); and
+    4. simple instruction format.
+
+  **Intel x86 CISC machine**, below
+    Taught Intel x86 Microprocessor systems like Registers, Addressing Modes, I/O systems, Interrupts
 
 data structures
+  - technical doc
 
 standard programming practices
+  - Clear definition, High cohesion (class has clear goal.)
+  - Low coupling between modules.
+    - Use setters and getters.
+    - Use
+  - Encapsulation: The module has data and the functions it contains only deal with that data.
+  - Simple to use
+  - Readability
+  - Testability
 
 testing
+  **Summary**
+  I took an elective on software verification and validation that taught methods for black box, white box, and integration testing.
+  - Questions doc
 
 agile scrum
+  Scrum sprints ~ 2 weeks**
+  Daily meetings and stating:
+    1. What's been done
+    2. What to do
+    3. Issues
+
+  It is meant to be adaptive to customers changing their requirements
+
+  **Summary**
+  I've only heard of scrum sprints, but never been a part of a formal one. A sprint usually lasts 2 weeks and it includes daily meetings that state 'what's been done', 'What needs to be done', and 'current Issues'. The sprint is meant to be adaptive to customers that have changing requirements.
 
 end \\\\\\\\\\\\\\\\
 
@@ -213,6 +353,7 @@ end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 ###**Processors**
 
 ###**ARM**
+13 general purpose registers.
 
 ####**Models:**
   - Von Neumann Model: Arithmetic and Logic unit (ALU), control unit (control signals), memory unit (holds data and program), input unit, and output unit.
@@ -233,7 +374,7 @@ end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
       - If 16 MB locations, then 2^4 * 2^20 means N = 24 lines.
 
 ####**Registers:**
-  - Execution Unit (execution of program instructions) multipurpose registers:
+  - Execution Unit (execution of program instructions) 8 multipurpose registers:
     - EAX: Accumulator: Used for arithmetic and logic operations. Destination for MUL and DIV
     - EBX: Base Index: Usually used to hold offset address
     - ECX: Count: Usually used to hold count value for instructions like loops and rotates.
@@ -263,6 +404,7 @@ end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
   - BIU (Bus Interface Unit) - provides interface to memory and I/O:
     1. controls the address, data, and control busses.
     2. handles instruction fetch and data read/write functions
+      Segment registers.
       - CS Code Segment: Used to compute the starting address of the section of memory holding code (restricted to 64K in REAL mode).
 
       - DS Data Segment: Used to compute the starting address of the section of memory holding data (restricted to 64K in REAL mode).
@@ -347,6 +489,7 @@ end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
       - level sensitive
       - must remain held by external device at logic 1 until INTA goes low
       - usually reset within the interrupt service routine (ISR)
+      - Lower priority than NMI
     - NMI – non-maskable interrupt
       - edge triggered.
       - must be logic zero for two clock periods before positive edge.
@@ -359,7 +502,7 @@ end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     - INTO – interrupt on overflow (‘O’ flag bit)
     - BOUND – specify upper & lower bounds
     - Divide by zero error
-    
+
   ```
   Interrupted processing: doesn’t “know” it was interrupted
     Processor:
@@ -374,7 +517,7 @@ end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
     - event-driven programming.  
     - external hardware spontaneously cause control transfer (interruption in default program sequence).
   ```
-  
+
   - For every interrupt, there must be an interrupt service routine (ISR), or interrupt handler. When an interrupt occurs, the microcontroller runs the interrupt service routine. For every interrupt, there is a fixed location in memory that holds the address of its interrupt service routine, ISR. The table of memory locations set aside to hold the addresses of ISRs is called as the Interrupt Vector Table.
 
   - Level–sensitive: external interrupt generated as long as pin is high/low
@@ -566,16 +709,46 @@ end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
 ###**Multithreading**
 ####**Process vs Threads**
-Creating a Process is slower due to the child is a duplicate of the parent and has its own allocated memory and stack. Takes time to copy. Almost 2 times slower than thread creation.
+  **Process**
+A process is an instance of a program running in a computer.
+  Two essential elements of a process are:
+  	1. Program code, which may be shared with other processes that are executing the same program
+  	2. A set of data associated with that code, when the processor begins to execute the program code we refer to this executing entity as a process
+
+    PCB (Process control block is managed by the OS and when started it allocates main memory for its code and its associated data):
+      PID: process identifier
+      State
+      Priority
+      Program counter, for its code
+      Memory pointers, for its data
+      Context data
+      I/O status information
+      Accounting information
+
+      OS manages a Table of PCBs
+
+    Since PCB contains the critical information for the process, it must be kept in an area of memory protected from normal user access. In some operating systems the PCB is placed in the beginning of the kernel stack of the process since that is a convenient protected location.
+
+Creating a Process is slower due to the child being a duplicate of the parent and has its own allocated memory and stack (Each has its own PCB (process control block)). Takes time to copy. Almost 2 times slower than thread creation.
+States: Running, Ready, Blocked. Additional Ready/Suspend, Blocked/Suspend
+
   N CPUs, processes in running state is maximum N.
   Benefits
-  - No risk of data corruption between processes
-  - A crash in one process doesn't affect others
+  - No risk of data corruption between processes, kept in an area of memory protected from normal user access
+  - A crash in one process may not affect others
+  - Process states and it is dispatched and scheduled by the OS.
 
   Cons
-  - Need to Mode switch to kernel to be able to Context switch (suspend one process and then retrieving the next process)
+  - Need to Mode switch (changes privilege levels) to kernel to be able to Context switch (suspend one process and then retrieving the next process)
+    Switching processes need full context switch, can have negative impact on performance since need to load process elements and update the process control blocks.
 
+(When a process needs to access hardware, the kernel takes over and returns a response to the process.)
+
+Suspending a process also suspends all the threads that belong to that process, also with termination.
+
+  **Threads**
 Threads share the same memory addresses, that’s why we need synchronization to avoid problems
+States: Running, Ready, Blocked
   Benefits
   - Faster creation and termination
   - switching is faster due to no Mode switch
@@ -585,21 +758,30 @@ Threads share the same memory addresses, that’s why we need synchronization to
   - A crash in a thread may crash the entire process.
   - Have to synchronize
 
-    User Level threads
+    **User Level threads**
     Pro
     - Scheduling can be application specific
     - Thread switching does not require kernel mode privileges
 
     Cons
-    - A system call from one thread may block all the threads.
+    - A system call from one thread may block all the threads in the process
 
-    Kernel Level threads
+    **Kernel Level threads**
     Pros
-    - Management done by kernel
+    - Management and scheduling done by kernel
     - Threads can be run on multiple processors
 
     Cons
     - Need mode switch to control another thread.
+
+  Is there speed up by adding more cores?
+  	Depending on the application, the overhead of mode and context switching AND needed coordination for the parallel program AND some code needs to be sequential (some not parallelizable algorithm some cores idle) causes the relative speed up to actually not be 1 to 1
+
+  	For databases, there is super linear scaling due to the added cache with added CPUs and multiple instances that require no coordination. Majority of requests are reads so many requests can be handled in parallel.
+
+    Multi instance applications can act in parallel.
+      - Like java applications.
+
 
 ####**Creating a new or duplicate process:**
 	- In Linux, use
@@ -665,33 +847,174 @@ Threads share the same memory addresses, that’s why we need synchronization to
 
 2. If across multiple files. Include the file and use 'extern sem_t semaphore'
 
+  c ++
+  Main file:
+   // Declare sem_t
+   sem_t sync_emit_and_sensor;
+
+   // and initilze there
+   sem_init(&sync_emit_and_sensor, 0, 0);
+
+   sem_destroy(&sync_emit_and_sensor);
+
+
+   Other file:
+   // Make sure the file that creates the semaphore is executed first
+   // Must declare that it is in another file
+   extern sem_t sync_emit_and_sensor;
+
+   // Now can use in the file
+   sem_post(&sync_emit_and_sensor);
+
 
 3. If multiple programs with same semaphore (Like two processes using shared memory), then need to use:
+  Refer to IPC 1.
 
-```
-	int semctl(int sem_id, int sem_num, int command, ...);
-	int semget(key_t key, int num_sems, int sem_flags);
-	int semop(int sem_id, struct sembuf *sem_ops, size_t num_sem_ops);
-```
+###**Synchronization** is needed for threads and processes that share a resource.
+Need to:
+1. Coordinate processes that use shared data. The OS can block the process/thread instead of doing a busy waiting in a loop for a shared resource, that wastes CPU time on their processor.
 
-###**Synchronization** for threads and processes that share a resource.
-The OS can block the process/thread instead of doing a busy waiting in a loop for a shared resource, wasting CPU time on their processor.
+2. Use critical sections, A critical section is a segment of code that can be accessed by only one signal process at a certain instance in time. This section consists of shared data resources that need to be accessed by other processes.
 
-Try to satisfy:
+Use semaphores, A critical section execution is handled by a semaphore. A semaphore is simply a variable that stores an integer value. This integer can be accessed by two operations: wait() and signal().
+
+Concurrency refers to the ability of different parts or units of a program, algorithm, or problem to be executed out-of-order or in partial order, without affecting the final outcome. This allows for parallel execution of the concurrent units, which can significantly improve overall speed of the execution in multi-processor and multi-core systems.
+  - Difficulties:
+    - Sharing global resources
+    - Hard to locate programming errors as results are not deterministic and reproducible.
+    - Hard for OS to manage the allocation of resources optimally.
+
+Hardware support:
+  - Interrupt disabling, but only works in uniprocessor and performance is noticeably degraded.
+
+  When Interrupt are disabled then no other process is allowed to perform Context Switch operation that would allow only one process to enter into the Critical State.
+
+critical sections Try to satisfy:
   - Mutual exclusion: only one thread is in its critical section at a time.
-	- Progress
-	- Bounded wait: Guarantees all processes can enter the critical section. Picked from blocked queue.
+	- Progress: If no process is in the critical section, then no other process from outside can block it from entering the critical section.
+	- Bounded wait: the process will eventually gain control of the processor and not starved/deadlocked. Picked from blocked queue / Time limit on run for threads/processes.
+    For priority based Scheduling:
+      - Priority Inversion: high priority task is indirectly preempted by a lower priority task
+        Solution: Priority Inheritance: Say L executing its critical section, and H arrives and is blocked for it, so then L inherits H's priority to ensure M cannot preempt H and L.
 	- Fairness: If only one process needs to enter the critical section then it should be able to do it immediately.
 
+  **mechanisms provided by OS**
+  - Binary Semaphore: only 1 or 0.
 
   - General Semaphores: An integer used for signaling for processes and there are only 3 operations; initialize, decrement (may block a process, wait()), and increment (may unblock a process, signal()).
+    they can have any value you want. The max value X they take allows X process/threads to access the shared resource simultaneously
+
     - Strong: The process blocked the longest is released from the queue first (FIFO). Guarantees no starvation.
     - Weak: order removed from blocked queue not specified.
 
   - Mutex: is a lock and the processes that locked the mutex must be the one to unlock it.
 
+  - Condition Variable: Data type used to block
+
+  - Monitor: Only one process by actively access a monitor at one time, it encapsulates procedures for the critical sections.
+
+  - Mail Boxes/Messages: Processes exchange data that may be used for synchronization.
+
   - Inter-process communications (IPC) facilities:
-  	1. Sharing common semaphore
+  	1. Sharing common semaphore, use POSIX, put a sem on shared mem, or Linux facilities below
+
+     defn: POSIX is a family of standards, specified by the IEEE, to clarify and make uniform the application programming interfaces (and ancillary issues, such as commandline shell utilities) provided by Unix-y operating systems. If use linux API that is not standardized porting to other unix systems may be difficult.
+
+    Must implement:
+      set inital sem value with semctl
+      delete sem with semctl
+      wait function with semop
+      signal function with semop
+
+    ```
+      #include <sys/sem.h> // The header file sys/sem.h usually relies on two other header files, sys/types.h and sys/ipc.h.
+
+    	int semctl(int sem_id, int sem_num, int command, ...); // The semctl function allows direct control of semaphore information
+
+        The first parameter, sem_id, is a semaphore identifier, obtained from semget. The sem_num parameter
+        is the semaphore number. You use this when you’re working with arrays of semaphores. Usually, this is
+        0, the first and only semaphore. The command parameter is the action to take, and a fourth parameter, if
+        present, is a union semun, which according to the X/OPEN specification must have at least the following
+        members:
+          union semun {
+            int val;
+            struct semid_ds *buf;
+            unsigned short *array;
+          }
+
+        Most versions of Linux have a definition of the semun union in a header file (usually sem.h), though
+        X/Open does say that you have to declare your own. If you do find that you need to declare your own,
+        check the manual pages for semctl to see if there is a definition given. If there is, we suggest you use
+        exactly the definition given in your manual, even if it differs from that given here.
+
+        There are many different possible values of command allowed for semctl. Only the two that we describe
+        here are commonly used. For full details of the semctl function, you should consult the manual page.
+        The two common values of command are:
+          ❑ SETVAL: Used for initializing a semaphore to a known value. The value required is passed as the
+          val member of the union semun. This is required to set the semaphore up before it’s used for
+          the first time.
+          ❑ IPC_RMID: Used for deleting a semaphore identifier when it’s no longer required.
+
+        The semctl function returns different values depending on the command parameter. For SETVAL and
+        IPC_RMID it returns 0 for success and –1 on error.
+
+      // --
+
+    	int semget(key_t key, int num_sems, int sem_flags);  // The semget function creates a new semaphore or obtains the semaphore key of an existing semaphore
+
+        The first parameter, key, is an integral value used to allow unrelated processes to access the same semaphore.
+        All semaphores are accessed indirectly by the program supplying a key, for which the system then
+        generates a semaphore identifier. The semaphore key is used only with semget. All other semaphore
+        functions use the semaphore identifier returned from semget.
+
+        There is a special semaphore key value, IPC_PRIVATE, that is intended to create a semaphore that only
+        the creating process could access, but this rarely has any useful purpose. You should provide a unique,
+        non-zero integer value for key when you want to create a new semaphore.
+
+        The num_sems parameter is the number of semaphores required. This is almost always 1.
+
+        The sem_flags parameter is a set of flags, very much like the flags to the open function. The lower nine
+        bits are the permissions for the semaphore, which behave like file permissions. In addition, these can be bitwise
+        ORed with the value IPC_CREAT to create a new semaphore. It’s not an error to have the IPC_CREAT
+        flag set and give the key of an existing semaphore. The IPC_CREAT flag is silently ignored if it is not
+        required. You can use IPC_CREAT and IPC_EXCL together to ensure that you obtain a new, unique semaphore.
+        It will return an error if the semaphore already exists.
+
+        The semget function returns a positive (nonzero) value on success; this is the semaphore identifier used
+        in the other semaphore functions. On error, it returns –1.
+
+      // --
+    	int semop(int sem_id, struct sembuf *sem_ops, size_t num_sem_ops); // The function semop is used for changing the value of the semaphore; num_sem_ops is number of semaphores
+
+        The first parameter, sem_id, is the semaphore identifier, as returned from semget.
+
+        The second parameter,
+        sem_ops, is a pointer to an array of structures, each of which will have at least the following members:
+          struct sembuf {
+            short sem_num;
+            short sem_op;
+            short sem_flg;
+          }
+        The first member, sem_num, is the semaphore number, usually 0 unless you’re working with an array
+        of semaphores.
+
+        The sem_op member is the value by which the semaphore should be changed. (You can
+        change a semaphore by amounts other than 1.) In general, only two values are used, –1, which is your P
+        operation to wait for a semaphore to become available, and +1, which is your V operation to signal that a
+        semaphore is now available.
+
+        The final member, sem_flg, is usually set to SEM_UNDO. This causes the operating system to track the
+        changes made to the semaphore by the current process and, if the process terminates without releasing
+        the semaphore, allows the operating system to automatically release the semaphore if it was held by this process. It’s good practice to set sem_flg to SEM_UNDO, unless you specifically require different behavior.
+
+        If you do decide you need a value other than SEM_UNDO, it’s important to be consistent, or you can get very
+        confused as to whether the kernel is attempting to “tidy up” your semaphores when your process exits.
+
+        All actions called for by semop are taken together to avoid a race condition implied by the use of multiple
+        semaphores. You can find full details of the processing of semop in the manual pages.
+
+    ```
+
 	  2. Shared memory: It allows two unrelated processes to access the
 same logical memory. Shared memory is a very efficient way of transferring data between two running
 processes. A special range of addresses that is created by IPC for one process and appears in the
@@ -702,15 +1025,81 @@ to any other process that has access to the same shared memory.
 
 ```
 	#include <sys/shm.h>
-	void *shmat(int shm_id, const void *shm_addr, int shmflg);
+
+	void *shmat(int shm_id, const void *shm_addr, int shmflg); // When you first create a shared memory segment, it’s not accessible by any process. To enable access to the
+shared memory, you must attach it to the address space of a process. You do this with the shmat function.
+
+    The first parameter, shm_id, is the shared memory identifier returned from shmget.
+
+    The second parameter, shm_addr, is the address at which the shared memory is to be attached to the
+    current process. This should almost always be a null pointer, which allows the system to choose the
+    address at which the memory appears.
+
+    The third parameter, shmflg, is a set of bitwise flags. The two possible values are SHM_RND, which, in conjunction
+    with shm_addr, controls the address at which the shared memory is attached, and SHM_RDONLY,
+    which makes the attached memory read-only. It’s very rare to need to control the address at which shared
+    memory is attached; you should normally allow the system to choose an address for you, because doing
+    otherwise will make the application highly hardware-dependent.
+
+    If the shmat call is successful, it returns a pointer to the first byte of shared memory. On failure –1
+    is returned.
+  // --
+
 	int shmctl(int shm_id, int cmd, struct shmid_ds *buf);
-	int shmdt(const void *shm_addr);
-	int shmget(key_t key, size_t size, int shmflg);
+
+    The shmid_ds structure has at least the following members:
+      struct shmid_ds {
+        uid_t shm_perm.uid;
+        uid_t shm_perm.gid;
+        mode_t shm_perm.mode;
+      }
+
+    The first parameter, shm_id, is the identifier returned from shmget.
+
+    The second parameter, command, is the action to take. It can take three values, shown in the following table.
+
+    The third parameter, buf, is a pointer to the structure containing the modes and permissions for the
+    shared memory.
+
+    On success, it returns 0, on failure, –1.
+
+  // --
+
+	int shmdt(const void *shm_addr); // The control functions for shared memory
+
+    The shmdt function detaches the shared memory from the current process. It takes a pointer to the address
+    returned by shmat. On success, it returns 0, on error –1. Note that detaching the shared memory doesn’t
+    delete it; it just makes that memory unavailable to the current process.
+    // --
+
+  	int shmget(key_t key, size_t size, int shmflg); // You create shared memory using the shmget function
+
+    // As with semaphores, the program provides key, which effectively names the shared memory segment,
+    and the shmget function returns a shared memory identifier that is used in subsequent shared memory
+    functions. There’s a special key value, IPC_PRIVATE, that creates shared memory private to the process.
+    You wouldn’t normally use this value, and you may find the private shared memory is not actually private
+    on some Linux systems.
+
+    The second parameter, size, specifies the amount of memory required in bytes.
+
+    The third parameter, shmflg, consists of nine permission flags that are used in the same way as the mode
+    flags for creating files. A special bit defined by IPC_CREAT must be bitwise ORed with the permissions to
+    create a new shared memory segment. It’s not an error to have the IPC_CREAT flag set and pass the key of
+    an existing shared memory segment. The IPC_CREAT flag is silently ignored if it is not required.
+
+    The permission flags are very useful with shared memory because they allow a process to create shared
+    memory that can be written by processes owned by the creator of the shared memory, but only read by
+    processes that other users have created. You can use this to provide efficient read-only access to data
+    by placing it in shared memory without the risk of its being changed by other users.
+
+    If the shared memory is successfully created, shmget returns a nonnegative integer, the shared memory
+    identifier. On failure, it returns –1.
  ```
 ---
 	Ex.
 	#include "shm_com.h"	// shared memory structure for both consumer and producer to use, has a flag within to indicate which process will continue. int written_by_you;
 
+  Producer
   ```
 	int running = 1;
 	void *shared_memory = (void *)0;
@@ -733,16 +1122,16 @@ to any other process that has access to the same shared memory.
 		fprintf(stderr, "shmat failed\n");
 		exit(EXIT_FAILURE);
 	}
-	
-	
+
+
 	printf("Memory attached at %X\n", (int)shared_memory);
 
 	// assign shared_memory to shared stuff. USE IT
 	shared_stuff = (struct shared_use_st *)shared_memory;	//point to first byte
 	shared_stuff->written_by_you = 0;
 	strncpy(shared_stuff->some_text, buffer, TEXT_SZ); // buffer to some_text
-	
-	
+
+
 
 	// after finished, detach from shared memory
 	if (shmdt(shared_memory) == -1){
@@ -750,34 +1139,81 @@ to any other process that has access to the same shared memory.
 		exit(EXIT_FAILURE);
 	}
 
-	// Delete the shared memory since this is the creator
+	// only one of the users of the shared memory must delete it.
 	if(shmctl(shmid, IPC_RMID, 0) == -1){
 		fprintf(stderr,"shmctl(IPC_RMID) failed\n");
 		exit(EXIT_FAILURE);
 	}
 
   ```
----
+  consumer
+  ```
+  // Still create with same key
+  shmid = shmget((key_t)1234, sizeof(struct shared_use_st), 0666 | IPC_CREAT);
+
+  // attach
+  shared_memory = shmat(shmid, (void *)0, 0);
+  if (shared_memory == (void*)-1){
+    fprintf(stderr, "shmat failed\n");
+    exit(EXIT_FAILURE);
+  }
+
+  shared_stuff = (struct shared_use_st *)shared_memory;
+
+  // unlink
+  if (shmdt(shared_memory) == -1){
+    fprintf(stderr, "shmdt(shared_memory) failed\n");
+    exit(EXIT_FAILURE);
+  }
+
+  ```
+
 	// If we need to use semaphores on shared memory we can either put the semaphore on in shared memory or share named POSIX semaphores.
 		1. share named POSIX semaphores
-    ---
-      ```
-			//Choose a name for your semaphore
-			#define SNAME "/mysem"
 
+      Consumer
+      ```
+
+    #include <sys/shm.h>
+    #include <semaphore.h>  // for POSIX semaphore
+    #include <fcntl.h>      // this also needed
+
+    #include <errno.h>
+
+    #include "sh_arrayStruct.h" // The shared structure
+
+		//Choose a name for your semaphore
+		#define SNAME "/mysem" ~~
+
+    //main
 			//Use sem_open with O_CREAT in the process that creates them
 			sem_t *sem = sem_open(SNAME, O_CREAT, 0644, 3); /* Initial value is 3. */
 			errno=0;  /* <---- This is an important thing I learned when using errno. */
-			if ((sem_t *semaphore = sem_open("/sem1", O_CREAT | O_EXCL, 0644, 0)) == SEM_FAILED)
+			if (sem == SEM_FAILED)
 			   {
 			   fprintf(stderr, "sem_open() failed.  errno:%d\n", errno);
 			   ...
 
-		// then in the other process open the semaphore so it can use it.
-		sem_t *sem = sem_open(SEM_NAME, 0); /* Open a preexisting semaphore. */
-		```
+      sem_wait(sem);
+
+      // close the semaphore for this process, the semaphore remains in the system
+      sem_close(sem);
+      ```
+
+      Producer
+      ```
+      // name semaphore and is same name of existing semaphore ~~
+      #define SEM_NAME "/mysem"
+
+  		// then in the other process open the semaphore so it can use it.
+  		sem_t *sem = sem_open(SEM_NAME, 0); /* Open a preexisting semaphore. */
+
+      // The sem_unlink() function removes the semaphore identified by name and marks the semaphore to be destroyed once all processes cease using it (this may mean immediately, if all processes that had the semaphore open have already closed it).
+      sem_close(sem);
+      sem_unlink(SEM_NAME);
+  		```
     ---
-		2. Shared
+		2. Putting a sem in shared memory.
 ---
 		```
 		#include        <stdio.h>
@@ -836,6 +1272,31 @@ to any other process that has access to the same shared memory.
 
 	3. Message Queues
 
+  Message queues provide a reasonably easy and efficient way of passing data between two unrelated
+  processes. They have the advantage over named pipes that the message queue exists independently of
+  both the sending and receiving processes, which removes some of the difficulties that occur in synchronizing
+  the opening and closing of named pipes.
+
+  Unlike in the pipes example, there’s no need for the processes to provide their own synchronization
+  method. This is a significant advantage of messages over pipes.
+
+  // msg2 write strings with terminating /0 into buffer, then msg1 is ran and it reads from the queue.
+
+  ```
+
+  #include <sys/msg.h>
+
+  int msgctl(int msqid, int cmd, struct msqid_ds *buf); // The final message queue function is msgctl, which is very similar to that of the control function for
+shared memory. ex IPC_RMID
+
+  int msgget(key_t key, int msgflg); // You create and access a message queue using the msgget function
+
+  int msgrcv(int msqid, void *msg_ptr, size_t msg_sz, long int msgtype, int msgflg); // The msgrcv function retrieves messages from a message queue
+
+  int msgsnd(int msqid, const void *msg_ptr, size_t msg_sz, int msgflg); // The msgsnd function allows you to add a message to a message queue
+
+  ```
+
 In Java:
   - Synchronization
   Use 'synchronized' keyword to only allow one thread to access a method or data structure / object at one time.
@@ -845,6 +1306,7 @@ In Java:
   2. Thread(Runnable threadObj, String threadName); // Create the thread with the object that has a runnable interface.
   3. thread.start(); // to call the run() method.
 
+  process/thread completion on time checks.
   - Rate monotonic scheduling
   - Cyclic Executive
 
@@ -864,7 +1326,7 @@ In Java:
 
   - User Datagram protocol (UDP): Connectionless data transfer, has error checking with checksum, etc.
     java
-      ---
+
       ```
       byte[] sendBuf;
       int sendLen;
@@ -878,7 +1340,7 @@ In Java:
       packet = new DatagramPacket(sendBuf, sendLen + 4, remoteIpAddress, remotePort);
 			rcvHanlder.transferSocket.send(packet);
       ```
-      ---
+
 
 ###**Testing**
 - Application Under Test (AUT)
@@ -905,13 +1367,17 @@ Daily meetings and stating:
 It is meant to be adaptive to customers changing their requirements
 
 ###**Projects:**
+
+A Single Board Computer(SBC) is a printed circuit board (PCB) with a microcontroller and all components needed to make it function as a small computer
+
 ####**RPI: Touch screen**
-  The project was a system that helped tourist find locations of interest in a city, and my part was to create a touch screen kiosk that hosted the application so people without internet access could use it. I used a raspberry pi and created the circuits that enabled touch screen surface with infrared. To test and visualize if the correct location was touched on the screen, I wrote a visual studio application that received the intercept and showed which lines were being blocked to cause the intercept. (operation, 1 column of infrared emitters on one side of the screen and a column of infrared transistors on the other to create a touch screen area in between. The main idea is to have a single emitter on at a time and all the sensors would check if they can detect the ON emitter. If it doesn’t it means something is in the way. After cycling through the emitters, it will check if an intercept can be calculated.
+  The project was a system that helped tourist find locations of interest in a city, and my part was to create a touch screen kiosk that hosted the application so people without internet access could use it. I used a raspberry pi and PiFace to control the circuits that enabled a touch screen surface with infrared components. The main idea is to have 1 column of 8 infrared emitters on one side of the screen and a column of 8 infrared transistors on the other to create a touch screen area in between. The general operation is to have a single emitter on at a time and all the sensors would check if they can detect the ON emitter. If it doesn’t it means something was in the way. After cycling through the emitters, it will check if an intercept can be calculated.
+  To test and visualize if the correct location was touched on the screen, I wrote an (visual studio (c sharp)) application that received the touch location and showed which lines were being blocked to cause the intercept.
 
 ####**Arduino: maze robot:**
-  Based on sensor data from detecting the line in a line maze or walls in a wall maze the motor behaviour changed to navigate the robot.
+  Using an Arduino nano, the project was to have a maze robot self navigate a line and a wall maze by combining multiple sensor's data and changing motor behaviour accordingly.
 
-	LED globe: Persistance of vision illusion. Spin the 2D array of LEDs fast enough, 30 frames per second, it creates the illusion of a solid image when the LEDs and motor are synced.
+	Using an Arduino uno and Raspberry PI, the project was a LED globe to attempt the Persistance of vision illusion, the idea is to spin a single vertical array of LEDs on a 2D ring fast enough, 30 frames per second, that it creates the illusion of a solid image when the LEDs and motor are synced.
 
 ####**TFTP**
 

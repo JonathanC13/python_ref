@@ -40,13 +40,18 @@ Be on time. One of our hiring managers informed that she is always in the lobby 
       - Interpreted Language: the code is translated to bytecode and is executed by the Java virtual machine, this makes Java code portable on different devices
       - Object oriented
         - Inheritance: Allows subclasses to be created from super classes that share a set of attributes and methods.
-        - encapsulation: Used for data hiding, the object has data and the functions it contains only deal with that data.
+          Doesn't allow multiple inheritance due to parents having methods with the same signature, the compiler doesn't know which to call.
+        - encapsulation: Used for data hiding and the functions only deal with that data.
+          Getter and setters to hide internal representation
         - abstraction: Used to only show relevant methods to reduce complexity for the user that wants to implement them. We use abstract classes and interfaces to just present the methods.
+          - Can implement multiple interfaces.
+          - Fully abstract class and interface are the same.
+
         - polymorphism (is - a): This means any child class object can take any form of a class in its parent hierarchy and of course itself as well.
           Ex. Person -> Teacher.
             We can create
               Person person = new Person(); //Person reference and object
-              Person another_person = new Teacher(); //Person reference, Teacher object
+              Person another_person = new Teacher(); //Person reference, Teacher objectexposure
               Teacher teacher = new Teacher(); //Teacher reference and obj.
               - If the reference is higher in the hierarchy, then it can create any child object. We do this because some subclasses have overwritten methods that do different things.
       - Garbage collection for unreferenced objects
@@ -57,7 +62,7 @@ Be on time. One of our hiring managers informed that she is always in the lobby 
       - Java uses exception handling, so you can catch and deal with it.
 
     - C
-      - C is compiled, so it converts code into machine code representation which is understood by the processor. As long as the platform has a C compiler it is portable, but there is some code that is not portable. Like assuming a specific memory address is mapped to a hardware register and specific API (application programming interface) calls to the operating system.
+      - C is compiled, as long as the platform has a C compiler it is portable, it converts code into machine code representation which is understood by the processor, but there is some code that is not portable. Like assuming a specific memory address is mapped to a hardware register and specific API (application programming interface) calls to the operating system.
       - Procedural, executes in the order it was written.
       - Need to manage memory with malloc and free or we risk memory leaks.
       ```
@@ -71,5 +76,6 @@ Be on time. One of our hiring managers informed that she is always in the lobby 
 
 
 ###**Gen Dy 4. Explain a time when you were able to improve upon the design that was originally requested.**
+  Maze robot
 
 ###**Gen Dy 5. Do you want to stay on a technical career path or eventually move to a leadership/management role?**
