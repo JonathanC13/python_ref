@@ -30,10 +30,10 @@ This list is meant to be a both a quick guide and reference for further research
 
 **Dynamic Arrays**
 - Are like linear arrays where it stores data elements sequentially and is optimized for indexing,
-- Is a data structure that will attempt to grow if you want to do an insertion when it is full, either it will grow in the same memory location if there is space or into a larger memory space elsewhere. (copying in larger array)
+- Is a data structure that will attempt to grow if you want to do an insertion when it is full, either it will copy to grow in the same memory location if there is space or copy into a larger memory space elsewhere. (copying in larger array)
 
 **Two dimensional arrays**
-- Built to have x and y indices like a grid or nested arrays to represent something like a matrix or r,g,b values for an image.
+- Built to have x and y indices like a grid or nested arrays to represent something like a matrix or r,g,b values for pixels in an image.
 
 ####
 
@@ -75,7 +75,7 @@ This list is meant to be a both a quick guide and reference for further research
 - A linked list contains nodes, which have space for the data and a reference, and it chains these nodes together by pointing a node's reference to another node. It is designed to optimize insertion and deletion, Big O of O of 1, but it is slow at indexing and searching, Big O of O of n, since you have to follow the links (can be very scattered memory locations).
 
 **Doubly Linked list**
-- In a Doubly linked list, each node has an additional reference that points to the previous node to enable backward traversal, this makes insertion and deletion quicker since you don't need traverse with additional pointers to perform the operations.
+- In a Doubly linked list, each node has an additional reference that points to the previous node to enable backward traversal, this makes insertion and deletion quicker before a node if the pointer the node is given compared to a singly linked list.
 
 **Linked List searches**
 - A linear search for a linked list is effective since you don't have direct access to elements of linked lists with indices.
@@ -322,7 +322,7 @@ This list is meant to be a both a quick guide and reference for further research
 - Worst Case Sort: Merge Sort: O(n log n)
 
 ####**summary**
-- It is a comparison based soring algorithm, where is starts by continuously halving the dataset until the smallest unit of 1 element, then it orders the elements by pairing groups as it merges back into one complete set. Average Time complexity is O of n log n. (bad, have to divide the array set close to linear increase)
+- It is a comparison based soring algorithm, where is starts by continuously halving the dataset until the smallest unit of 1 element, then it orders the elements by pairing groups of the same size left to right as it merges back into one complete set. Average Time complexity is O of n log n. (bad, have to divide the array set close to linear increase)
 
 ###**Quicksort** https://www.geeksforgeeks.org/quick-sort/
 ####Definition:
@@ -342,7 +342,9 @@ This list is meant to be a both a quick guide and reference for further research
 - Worst Case Sort: Merge Sort: O(n^2)
 
 ####**summary**
-- It is a comparison based sorting algorithm where a pivot element is chosen, could be the most right element, and a wall index is tracked to divide the values less and greater than the pivot. Each time an element is less than the pivot it swaps it to put it behind the wall and when it reaches the pivot the pivot is swapped to the wall index. Average time complexity is O of n log n
+- It is a comparison based sorting algorithm where you choose a pivot element, it could be a chosen element like the most right, and putting all elements smaller than the pivot on the left side of the array. It repeats this process, until it reaches the pivot element, then places the pivot in the correct place where all the elements to the left are lesser and elements to the right are greater. It is done recursively with the halves until the array is sorted.
+
+It is a comparison based sorting algorithm where a pivot element is chosen, could be the most right element, and a wall index is tracked to divide the values less and greater than the pivot. Each time an element is less than the pivot it swaps it to put it behind the wall and when it reaches the pivot the pivot is swapped to the wall index. Average time complexity is O of n log n
 
 ###**Bubble Sort**
 ####Definition:
@@ -366,7 +368,7 @@ This list is meant to be a both a quick guide and reference for further research
 
 ###**Insertion Sort**
 ####Definition:
--  It is a comparison based sorting algorithm where the pivot is chosen starting from the left and compares the elements on the left of the pivot. If the pivot is less than an element, it is inserted to the left of it. An analogy is systematically sorting a hand of cards.
+-  It is a comparison based sorting algorithm where the pivot is chosen starting from the left and compares the elements on the left of the pivot. If the pivot is less than an element, the pivot is inserted to the left of it. An analogy is systematically sorting a hand of cards.
 
 ####Big O efficiency:
 - O(n*n)

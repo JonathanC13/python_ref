@@ -35,13 +35,13 @@ TCP/IP, UDP
   Transmission Control Protocol: Connection-oriented (Handshaking), point to point, reliable (in order), flow and congestion control, full duplex.
 
   The Model
-  1. The application layer provides applications with standardized data exchange. Its protocols include the Hypertext Transfer Protocol (HTTP), File Transfer Protocol (FTP), Post Office Protocol 3 (POP3), Simple Mail Transfer Protocol (SMTP) and Simple Network Management Protocol (SNMP).
+  4. The application layer provides applications with standardized data exchange. Its protocols include the Hypertext Transfer Protocol (HTTP), File Transfer Protocol (FTP), Post Office Protocol 3 (POP3), Simple Mail Transfer Protocol (SMTP) and Simple Network Management Protocol (SNMP).
 
-  2. The transport layer is responsible for maintaining end-to-end communications across the network. TCP handles communications between hosts and provides flow control, multiplexing and reliability. The transport protocols include TCP and User Datagram Protocol (UDP), which is sometimes used instead of TCP for special purposes.
+  3. The transport layer is responsible for maintaining end-to-end communications across the network. TCP handles communications between hosts and provides flow control, multiplexing and reliability. The transport protocols include TCP and User Datagram Protocol (UDP), which is sometimes used instead of TCP for special purposes.
 
-  3. The network layer, also called the internet layer, deals with packets and connects independent networks to transport the packets across network boundaries. The network layer protocols are the IP and the Internet Control Message Protocol (ICMP), which is used for error reporting.
+  2. The network layer, also called the internet layer, deals with packets and connects independent networks to transport the packets across network boundaries. The network layer protocols are the IP and the Internet Control Message Protocol (ICMP), which is used for error reporting.
 
-  4. The physical layer consists of protocols that operate only on a link -- the network component that interconnects nodes or hosts in the network. The protocols in this layer include Ethernet for local area networks (LANs) and the Address Resolution Protocol (ARP).
+  1. The physical layer consists of protocols that operate only on a link -- the network component that interconnects nodes or hosts in the network. The protocols in this layer include Ethernet for local area networks (LANs) and the Address Resolution Protocol (ARP).
 
   - User Datagram protocol (UDP): Connectionless data transfer, has error checking with checksum, etc.
   java
@@ -61,20 +61,22 @@ TCP/IP, UDP
     ```
 
     **Summary**
-    I took an elective in computer communications that taught the concepts and functions of each layer. I know that TCP/IP is a communication model used to connect devices to the internet. The layers are Application, Transport, Network, and physical/link.
+    I took an elective in computer communications that taught the concepts and functions of each layer. I know that TCP/IP is a communication model used to connect devices to the internet. The layers are Application, Transport, Network, and data link.
 
-    TCP (Transmission Control Protocol), is responsible for Connection-oriented (Handshaking), point to point, reliable (in order), flow and congestion control, and being full duplex. **Transport layer.**
-    IP, is the addresses for each host to uniquely identify it. This enables routing and packet forwarding. **Network layer.**
+    TCP (Transmission Control Protocol), is responsible for Connection-oriented Handshaking, point to point connection, reliable in order transfer, flow and congestion control, and being full duplex. **Transport layer.**
+    IP (internet protocol), is responsible for routing and forwarding datagrams across network boundaries. Its routing function enables internetworking, and essentially establishes the Internet. It requires hosts to have an IP address to uniquely identify it to public networks. **Network layer.**
+
+      An Internet Protocol address (IP address) is a numerical label assigned to each device connected to a computer network that uses the Internet Protocol for communication.[1][2] An IP address serves two principal functions: host or network interface identification and location addressing.
 
     I also had experience using UDP datagrams in a project to implement TFTP (Trivial File transfer protocol). (used for reliable transferring of files; Handshaking)
 
-    3. It provides host to host communication services (end to end), also responsible for the management of error correction, providing quality and reliability to the end user and it also allows multiplexing (many users share a medium bursty data, requires mux/demux).
+    3. transport layer. It provides host to host communication services (end to end), also responsible for the management of error correction, providing quality and reliability to the end user and it also allows multiplexing (many users share a medium bursty data, requires mux/demux).
       - TCP (Transmission Control Protocol), is responsible for Connection-oriented (Handshaking), point to point, reliable (in order), flow and congestion control, and being full duplex.
         - Flow control is traffic at the receiver buffer
         - Congestion control is traffic in the network, detected with packets dropped.
       - User Datagram protocol (UDP): Connectionless data transfer, has error checking with checksum
 
-    2. Network layer in every host and router, it has 2 key functions:
+    2. Network layer/ Internet layer in every host and router, it has 2 key functions:
       - Packet forwarding to the correct output at each router.
       - Determining the route taken by the packet from the source to destination.
         Distance Vector:
@@ -90,28 +92,35 @@ TCP/IP, UDP
             - Split horizon: do not report route to destination to the node it learned it from
             - Poisoned reverse: report infinite to the node it learned the route from.
 
-      - Address resolution protocol (ARP): Maps IP and MAC addresses to be able to send the datagram to the correct destination. Every host has an ARP table and is self learning if doesn't know.
-
       Can provide connectionless Datagram networks, (packets may take different paths) which doesn’t require an end to end connection (uses look up table to determine the next hop), or Connection oriented networks (signaling protocols for setup, maintain, and tear down virtual circuit) like Multiprotocol label switching.
 
-    1. PHY layer: The physical layer deals with bit-level transmission between different devices, it connects different interfaces (electrical and/ mechanical) to the physical medium to support synchronized communication.
-      Physical media:
-        Coaxial cable, Fiber optic
-      Multiplexing:
-        Time Division multiplexing
-        OFDM: Orthogonal
-        Frequency Division Multiplexing
-        Wavelength Division multiplexing
-        Code Division Multiplexing.
-
-      Data link layer: Has the responsibility of transferring datagrams from one node to an adjacent node in the network. It provides framing, link access, reliable delivery, flow control, error detection, error correction, and duplexing. Ethernet or ppp.
+    1. Data link layer: Has the responsibility of transferring datagrams from one node to an adjacent node in the network. It provides framing, link access, reliable delivery, flow control, error detection, error correction, and duplexing. Ethernet or ppp.
+      (Parity check, Checksum, cyclic redundancy check)
 
         Includes:
-        Medium access control layer (MAC): controls access to the medium through CSMA/CD. Also determines where one frame of data ends and the next one starts – frame synchronization. There are four means of frame synchronization: time based, character counting, byte stuffing and bit stuffing.
+        - Address resolution protocol (ARP): Maps IP and MAC addresses to be able to send the datagram to the correct destination. Every host has an ARP table and is self learning if doesn't know.
+
+        - Medium access control layer (MAC): controls access to the medium through CSMA/CD or CA for wireless. Also determines where one frame of data ends and the next one starts – frame synchronization. There are four means of frame synchronization: time based, character counting, byte stuffing and bit stuffing.
+
+          MAC addresses are also known as hardware addresses or physical addresses. They uniquely identify an adapter on a LAN. They allow computers to uniquely identify themselves on a network at this relatively low level. IP changes if device moves, but MAC stays the same.
+          DHCP also usually relies on MAC addresses to manage the unique assignment of IP addresses to devices.
+
+
+      Still needed but not specified
+      PHY layer: The physical layer deals with bit-level transmission between different devices, it connects different interfaces (electrical and/ mechanical) to the physical medium to support synchronized communication.
+        Physical media:
+          Coaxial cable, Fiber optic
+        Multiplexing:
+          Time Division multiplexing
+          OFDM: Orthogonal
+          Frequency Division Multiplexing
+          Wavelength Division multiplexing
+          Code Division Multiplexing.
 
 computer architecture
   **ARM**
     Intro to ARM processor (Advanced RISC (Reduced instruction set computer) Machine) where the chip is smaller, lower power consumption, and higher speed due to better pipelining by adding stages and trying to have them take equal duration (fetch and execution).
+    1 cycle into 6 stages?
       - Fetch instruction (FI)
       - Decode instruction (DI)
       - Calculate operand (CO)
@@ -126,6 +135,47 @@ computer architecture
     3. register/register operations (load and store); and
     4. simple instruction format.
 
+    - A load-store architecture: load data into registers, process data, store results.
+    - Fixed-length 32-bit instructions, or 16-bit Thumb
+    instructions
+    - 3-address instruction formats.
+
+      ARM uses a load-store model for memory access which means that only load/store (LDR and STR) instructions can access memory. While on x86 most instructions are allowed to directly operate on data in memory, on ARM data must be moved from memory into registers before being operated on. This means that incrementing a 32-bit value at a particular memory address on ARM would require three types of instructions (load, increment, and store) to first load the value at a particular address into a register, increment it within the register, and store it back to the memory from the register.
+
+    - I/O
+      - Memory-mapped IO devices: Devices appear as
+      addressable locations in ARM memory map.
+      - Reading and writing to devices use load-store
+      instructions.
+      - Peripherals attract processor’s attention by normal
+      interrupt requests, normal (IRQ) or fast (FIQ).
+      - Most interrupt sources connect to IRQ input, one or two
+      time-critical sources connect to high-priority FIQ.
+      - Interrupts comprise a special form of exceptions.
+
+
+    - Processor Modes
+
+        ARM supports 7 modes of operation.
+        • User (unprivileged) Mode: Used by most applications.
+        While processor in this mode, program being executed
+        does not have access to protected system resources.
+
+        • Exception (privileged) Modes: Used to run system
+        software. Have full access to system resources. Modes
+        can be exchanged freely.
+          1. Supervisor Mode: Used by operating system.
+          2. Abort Mode: Entered in response to memory fault.
+          3. Undefined Mode: Entered when processor attempts an
+          supported instructions.
+          4. Fast Interrupt Mode: Entered when processor receives
+          signal from fast interrupt source. Fast interrupt cannot
+          be interrupted but can interrupt a normal interrupt.
+          5. Interrupt Mode: Entered when processor receives
+          signal from interrupt source.
+          6. System Mode: Used for running certain privileged
+          operating system tasks.
+
   **Intel x86 CISC machine**, below
     Taught Intel x86 Microprocessor systems like Registers, Addressing Modes, I/O systems, Interrupts
 
@@ -136,7 +186,7 @@ standard programming practices
   - Clear definition, High cohesion (class has clear goal.)
   - Low coupling between modules.
     - Use setters and getters.
-    - Use
+    - Provide interfaces instead of linking methods in other classes directly.
   - Encapsulation: The module has data and the functions it contains only deal with that data.
   - Simple to use
   - Readability
@@ -146,6 +196,35 @@ testing
   **Summary**
   I took an elective on software verification and validation that taught methods for black box, white box, and integration testing.
   - Questions doc
+
+  - Functional requirements: Defines what the system behaviour is with certain inputs described in its specifications.
+	Unit testing (test individual methods), integration testing (big bang, top down, bottom up, sandwich) After unit tests determine which modules to do integration testing order. System testing, acceptance testing.
+
+  - Non-functional requirements: How the system operates like the quality of the system
+	Examples are Usability, security, performance (execution speed). (- testing)
+
+  - Black box testing: Concerned with what the output is with a certain inputs to test functionality. Can be used to confirm functional and non-functional requirements, but you don’t know how much of the system was tested.
+
+  	Functionality-Based Input Domain Modeling with pairwise testing and all combinations.
+  	Boundary value analysis
+  	For GUI, record/ playback
+
+  - White box testing: Testing the paths within the code to achieve code coverage, but doesn’t reveal missing functionality. Still checking expected output in the end, may be hard due to many branches and loops. Cons quite complex and expensive.
+
+  	Control flow, data flow, logic coverage
+
+  - integration testing methodologies:
+	First the modules have to be ordered by dependencies, then there are 4 methods that determine the order that the modules are tested.
+
+		1. There is Big Bang Integration, where after all the modules are tested, they are all put together and the whole system is tested at once. This makes it difficult to find the root cause of any error.
+
+		2. There is Bottom-Up integration, where the modules with no dependencies are tested first then you connect upwards. This requires drivers with no stubs. The problem is that the lower level is more general routines and error in design at the top level may affect it.
+
+		3. There is Top down integration, where all the top controlling modules are tested first. Less drivers are needed, but need more stubs which are more error prone and complex.
+
+		4. Last is Sandwich integration, where there is a target middle layer and the bottom and top are tested. Tests both the controlling and general purpose routines, but the middle layer modules may not be sufficiently tested.
+
+
 
 agile scrum
   Scrum sprints ~ 2 weeks**
@@ -217,6 +296,25 @@ TO DO:
 - (O(n^2)) For O of n squared the algorithm's performance is directly proportional to the square of the input data. This usually involves nested loops over a data set.
 
 - (O(log n)) For O of log n the algorithm's performance is proportional to the logarithmic function and means after the curve starts to flatten, the increase of input data has minimal effect on its performance. An example is binary search.
+
+####**misc**
+
+- Python lists behind the scenes are dynamic arrays. This means lists allow elements to be added or removed and they will automatically adjust the backing store that holds these elements by allocating or releasing memory. Python lists can hold arbitrary elements—“everything” is an object in Python, including functions. Therefore you can mix and match different kinds of data types and store them all in a single list.
+
+- Java
+  - Array.
+    int[] data; // create the reference
+    data = new int[] {10,20,30,40,50,60,71,80,90,91}; // alias, link the reference to the object
+
+  - ArrayList
+    ArrayList is a collection framework used in java that serves as dynamic data structure incorporating the traits of an array
+
+      ArrayList<Integer> array = new ArrayList<Intger>(); // create reference = to object
+
+      //Add elements you wish
+      array.add(1);
+
+- C arrays must declare size since it needs to allocate memory on the stack.
 
 ###**Strongly typed**
 https://stackoverflow.com/questions/11328920/is-python-strongly-typed
@@ -373,6 +471,21 @@ end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
       - If N = 20 lines, then 1 M byte
       - If 16 MB locations, then 2^4 * 2^20 means N = 24 lines.
 
+####**Modes**
+- Protected mode:
+  - The Windows operating system domain.
+  - 4G of memory with 2G for the system and 2 G for the application
+  - Protected mode still uses segment and offset addresses, but the offset address is 32-bits
+  - Protection is provided by restricting access through priority levels and access rights
+    - When accessing this memory the descriptor describes the base address (starting address) and limit (offset to the ending address) of a segment and the privilege level.
+
+  - Real Mode: the 8086/8088/186 can only operate in this mode
+
+####**Paging**
+ - paging is a memory management scheme by which a computer stores and retrieves data from secondary storage for use in main memory. In this scheme, the operating system retrieves data from secondary storage in same-size blocks called pages (so in RAM u only need the page table and each there will be references to its pages in secondary memory). Paging is an important part of virtual memory implementations in modern operating systems, using secondary storage to let programs exceed the size of available physical memory.
+
+ - For simplicity, main memory is called "RAM" (an acronym of "random-access memory") and secondary storage is called "disk" (a shorthand for "hard disk drive"), but the concepts do not depend on whether these terms apply literally to a specific computer system.
+
 ####**Registers:**
   - Execution Unit (execution of program instructions) 8 multipurpose registers:
     - EAX: Accumulator: Used for arithmetic and logic operations. Destination for MUL and DIV
@@ -402,6 +515,12 @@ end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
           - the difference of two negative operands is less than -128.
 
   - BIU (Bus Interface Unit) - provides interface to memory and I/O:
+
+    - The Instruction Pointer (IP) is updated by theBIU. (or called PC - program counter)
+        - EIP (32 bits) in 80386 and up
+    - IP contains the offset of the next instruction to be
+    fetched from the beginning of the code segment.
+
     1. controls the address, data, and control busses.
     2. handles instruction fetch and data read/write functions
       Segment registers.
@@ -531,9 +650,9 @@ end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
   - Interrupt Response Sequence
     Each time the mP completes execution of an instruction, it will check the status of NMI and INTR.
     - if either is active, or if the next instruction is INTO, INT n, or BOUND, then:
-      1. Push flag register onto stack.
+      1. Push flag register onto stack. (saving state of current process)
       2. Clear IF and TF (interrupt enable and trap flags). Interrupts are now disabled. (So an interrupt cannot be interrupted)
-      3. Push CS then IP on stack.
+      3. Push CS then IP on stack. (pointer to code of process)
       4. Fetch the interrupt vector: Each interrupt vector contains the address (segment and offset) of the service routine.
       5. Proceed to the ISR; flush the instruction queue
     - The final statement of an interrupt service routine (ISR) is IRET – it pops IP, CS and Flags.
