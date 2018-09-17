@@ -41,7 +41,7 @@ Be on time. One of our hiring managers informed that she is always in the lobby 
       - Object oriented. Good practices are high cohesion and low coupling.
         - Inheritance: Allows subclasses to be created from super classes that share a set of attributes and methods.
           Doesn't allow multiple inheritance due to parents having methods with the same signature, the compiler doesn't know which to call.
-        - encapsulation: Used for data hiding and it groups data and methods that only work on that data.
+        - encapsulation: Used for data hiding and it groups data and the methods that only work on that data into a capsule
           Getter and setters to hide internal representation
         - abstraction: Used to hide implementation details and only show relevant methods to reduce complexity for the user that wants to implement them. We use abstract classes and interfaces to just present the methods.
           - Can implement multiple interfaces.

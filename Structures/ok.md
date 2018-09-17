@@ -1,4 +1,4 @@
-####**Leonardo DRS**
+Conservatives####**Leonardo DRS**
 C / Java
   - Differences
     - Object Oriented
@@ -13,7 +13,7 @@ Multitasking/multithreading (Processes and threads), synchronization concepts (s
   - Hand write producer/cons and reader/writer.
 
 VoIP:
-  Use IP to carry voice for telephone calls. I don't know much of the technical aspects, just some overall elements it needs to operate like:
+  Use IP to carry voice for telephone calls. I just some overall elements it needs to operate like:
     1. Signaling: capability to generate and exchange control information that will be used to establish, monitor, and release connections between two end-points. including H.323, Session Initiation Protocol (SIP), H.248, Media Gateway Control Protocol (MGCP), and Skinny Client Control Protocol (SCCP)
     2. Database services for extra services like caller ID.
     3. Codecs: coding and decoding translation between analog and digital facilities
@@ -28,7 +28,7 @@ VoIP:
     Cons: technical challenges.
       - Delays degrade voice quality, high ping is noticeable
       - Network jitter, packet arrival gaps
-      - Security of network.
+      - Security of network. Different issues that traditional phone system
       - Existing NAT (network address translation) may not translate to the correct private IP.
 
 TCP/IP, UDP
@@ -70,11 +70,17 @@ TCP/IP, UDP
 
     I also had experience using UDP datagrams in a project to implement TFTP (Trivial File transfer protocol). (used for reliable transferring of files; Handshaking)
 
-    3. transport layer. It provides host to host communication services (end to end), also responsible for the management of error correction, providing quality and reliability to the end user and it also allows multiplexing (many users share a medium bursty data, requires mux/demux).
-      - TCP (Transmission Control Protocol), is responsible for Connection-oriented (Handshaking), point to point, reliable (in order), flow and congestion control, and being full duplex.
+    3. transport layer. It provides host to host communication services (end to end), management of error correction, providing quality and reliability to the end user, and it also allows multiplexing (many users share a medium bursty data, requires mux/demux).
+      - TCP (Transmission Control Protocol), is responsible for Connection-oriented (Handshaking), point to point connection, reliable in order transfer, flow and congestion control, and being full duplex.
         - Flow control is traffic at the receiver buffer
         - Congestion control is traffic in the network, detected with packets dropped.
       - User Datagram protocol (UDP): Connectionless data transfer, has error checking with checksum
+
+      multiplexing is a method by which multiple analog or digital signals are combined into one signal over a shared medium.
+
+      Transport layer gathers chunks of data it receives from different sockets and encapsulate them with transport headers. Passing these resulting segments to the network layer is called multiplexing.
+
+      The reverse process which is delivering data to the correct socket by the transport layer is called demultiplexing. But this still doesn’t explain how the transport layer identifies the correct socket. Port numbers are the ones that do the trick.s
 
     2. Network layer/ Internet layer in every host and router, it has 2 key functions:
       - Packet forwarding to the correct output at each router.
@@ -120,7 +126,7 @@ TCP/IP, UDP
 computer architecture
   **ARM**
     Intro to ARM processor (Advanced RISC (Reduced instruction set computer) Machine) where the chip is smaller, lower power consumption, and higher speed due to better pipelining by adding stages and trying to have them take equal duration (fetch and execution).
-    1 cycle into 6 stages?
+
       - Fetch instruction (FI)
       - Decode instruction (DI)
       - Calculate operand (CO)
@@ -129,7 +135,7 @@ computer architecture
       - Write operand (WO)
 
         Hazards: Non identical duration means waiting for other stages, branching and interrupts invalidate fetching, memory conflicts
-    Features:
+    ARM Features:
     1. fixed instruction lengths (usually 4 bytes);
     2. simple addressing modes (no indirect);
     3. register/register operations (load and store); and
@@ -141,6 +147,8 @@ computer architecture
     - 3-address instruction formats.
 
       ARM uses a load-store model for memory access which means that only load/store (LDR and STR) instructions can access memory. While on x86 most instructions are allowed to directly operate on data in memory, on ARM data must be moved from memory into registers before being operated on. This means that incrementing a 32-bit value at a particular memory address on ARM would require three types of instructions (load, increment, and store) to first load the value at a particular address into a register, increment it within the register, and store it back to the memory from the register.
+
+        - Use load/store to minimize the architecture since only operating on registers and The instructions should be simple enough to only require 1 execute cycle in the pipeline to be effective
 
     - I/O
       - Memory-mapped IO devices: Devices appear as
@@ -479,7 +487,9 @@ end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
   - Protection is provided by restricting access through priority levels and access rights
     - When accessing this memory the descriptor describes the base address (starting address) and limit (offset to the ending address) of a segment and the privilege level.
 
-  - Real Mode: the 8086/8088/186 can only operate in this mode
+  - Real Mode: the 8086/8088/186 can only operate in this mode. These are microprocessors, 8086 no internal memory but registers to store immediate and final results. Connected to ROM and RAM. 20-bit external address bus provides a 1 MB physical address space (220 = 1,048,576).
+
+    A microprocessor is a computer processor that incorporates the functions of a central processing unit on a single integrated circuit (IC),[1] or at most a few integrated circuits.[2] The microprocessor is a multipurpose, clock driven, register based, digital-integrated circuit that accepts binary data as input, processes it according to instructions stored in its memory, and provides results as output.
 
 ####**Paging**
  - paging is a memory management scheme by which a computer stores and retrieves data from secondary storage for use in main memory. In this scheme, the operating system retrieves data from secondary storage in same-size blocks called pages (so in RAM u only need the page table and each there will be references to its pages in secondary memory). Paging is an important part of virtual memory implementations in modern operating systems, using secondary storage to let programs exceed the size of available physical memory.
@@ -616,7 +626,7 @@ end \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
       - Often used for parity errors, power failures and other major faults.
 
   - A software interrupt is caused either by an exceptional condition or a special instruction in the instruction set which causes an interrupt when it is executed by the processor.
-    - INT n – specify interrupt type (32-255)
+    - INT n – specify interrupt type (32-255), special instruction
     - INT 3 is special 1-byte case (useful for debugging)
     - INTO – interrupt on overflow (‘O’ flag bit)
     - BOUND – specify upper & lower bounds
@@ -839,7 +849,7 @@ A process is an instance of a program running in a computer.
       State
       Priority
       Program counter, for its code
-      Memory pointers, for its data
+      Memory pointers, for its data*
       Context data
       I/O status information
       Accounting information
@@ -884,6 +894,15 @@ States: Running, Ready, Blocked
 
     Cons
     - A system call from one thread may block all the threads in the process
+      a system call is the programmatic way in which a computer program requests a service from the kernel of the operating system it is executed on. A system call is a way for programs to interact with the operating system.
+
+      Services Provided by System Calls :
+        Process creation and management
+        Main memory management
+        File Access, Directory and File system management
+        Device handling(I/O)
+        Protection
+        Networking, etc.
 
     **Kernel Level threads**
     Pros
@@ -937,13 +956,14 @@ States: Running, Ready, Blocked
 ```
 
 ####**C semaphore:**
+A semaphore is simply a variable that stores an integer value. This integer can be accessed by two operations: wait() and signal() to coordinate A critical section execution
 
 1. For one whole program
 **Init:**
 
 ```
 	int res;
-
+  sem_t sync_bin_sem;
 	// int sem_init(sem_t *sem, int pshared, unsigned int value); if 0 it is shared among threads, if pshared is non-zero means shared with multiple processes so need a shared memory location.
 	res = sem_init(&bin_sem, 0, 0);	// 2nd arg is scope
 	if (res != 0){
@@ -955,16 +975,16 @@ States: Running, Ready, Blocked
 **decrement (wait):**
 
 ```
-	sem_wait(&bin_sem);// decrement by 1, if sem is 0 then it is blocked here
+	sem_wait(&bin_sem);// decrement by 1, if sem is <= 0 then it is blocked here
 ```
 
 **increment (signal):**
 
 ```
-	sem_post(&bin_sem); // increment by 1, if 0 it may unblock for another thread or process
+	sem_post(&bin_sem); // increment by 1, if > 0 it may unblock another thread or process
 ```
 
-2. If across multiple files. Include the file and use 'extern sem_t semaphore'
+2. If across multiple files, but still same process (program). Include the file and use 'extern sem_t semaphore'
 
   c ++
   Main file:
@@ -991,13 +1011,18 @@ States: Running, Ready, Blocked
 
 ###**Synchronization** is needed for threads and processes that share a resource.
 Need to:
-1. Coordinate processes that use shared data. The OS can block the process/thread instead of doing a busy waiting in a loop for a shared resource, that wastes CPU time on their processor.
+1. Coordinate processes/threads that use shared data. - The OS can block the process/thread instead of doing a busy waiting in a loop for a shared resource, that wastes CPU time on their processor.
 
-2. Use critical sections, A critical section is a segment of code that can be accessed by only one signal process at a certain instance in time. This section consists of shared data resources that need to be accessed by other processes.
+2. Use critical sections for sections of code that accesses shared data, we can use semaphores , - A critical section is a segment of code that can be accessed by only one signal process at a certain instance in time. This section consists of shared data resources that need to be accessed by other processes.
 
-Use semaphores, A critical section execution is handled by a semaphore. A semaphore is simply a variable that stores an integer value. This integer can be accessed by two operations: wait() and signal().
+  To coordinate access to critical sections we Use semaphores. A semaphore is simply a variable that stores an integer value. This integer can be accessed by two operations: wait() and signal().
 
-Concurrency refers to the ability of different parts or units of a program, algorithm, or problem to be executed out-of-order or in partial order, without affecting the final outcome. This allows for parallel execution of the concurrent units, which can significantly improve overall speed of the execution in multi-processor and multi-core systems.
+\\
+Concurrency is the concept of several running tasks that happen within the a time frame without the final outcome being affected, this can mean time sharing a single processor between the tasks or a truly parallel tasks on multiple CPUs.
+
+Parallel means several calculations or programs running simultaneously. 2 processes on 2 CPU running independently.
+
+Concurrency refers to the ability of different parts or units of a program, algorithm, or problem to be executed out-of-order or in partial order, without affecting the final outcome. This can allow for parallel execution of the concurrent units, which can significantly improve overall speed of the execution in multi-processor and multi-core systems.
   - Difficulties:
     - Sharing global resources
     - Hard to locate programming errors as results are not deterministic and reproducible.
@@ -1007,11 +1032,11 @@ Hardware support:
   - Interrupt disabling, but only works in uniprocessor and performance is noticeably degraded.
 
   When Interrupt are disabled then no other process is allowed to perform Context Switch operation that would allow only one process to enter into the Critical State.
-
+\\
 critical sections Try to satisfy:
   - Mutual exclusion: only one thread is in its critical section at a time.
-	- Progress: If no process is in the critical section, then no other process from outside can block it from entering the critical section.
-	- Bounded wait: the process will eventually gain control of the processor and not starved/deadlocked. Picked from blocked queue / Time limit on run for threads/processes.
+	- Progress: If no process is in the critical section, then no other process from outside can block it from entering the critical section. So eventually all processes will progress.
+	- Bounded wait: a process will eventually gain control of the processor and not starved/deadlocked. Scheduler should be able to tell a process has been waiting more than a certain amount of time will get access. Picked from blocked queue / Time limit on run for threads/processes.
     For priority based Scheduling:
       - Priority Inversion: high priority task is indirectly preempted by a lower priority task
         Solution: Priority Inheritance: Say L executing its critical section, and H arrives and is blocked for it, so then L inherits H's priority to ensure M cannot preempt H and L.
@@ -1019,18 +1044,60 @@ critical sections Try to satisfy:
 
   **mechanisms provided by OS**
   - Binary Semaphore: only 1 or 0.
+    - After arithmetic:
+      wait: <= 0, ex sem = 1;
+                    sem = sem - 1;
+                    if (sem <= 0) wait(sem);
+
+      signal: > 0; ex sem = 0;
+                      sem = sem + 1;
+                      if (sem > 0) signal(sem);
 
   - General Semaphores: An integer used for signaling for processes and there are only 3 operations; initialize, decrement (may block a process, wait()), and increment (may unblock a process, signal()).
-    they can have any value you want. The max value X they take allows X process/threads to access the shared resource simultaneously
+    they can have any value you want. The max value X they take allows X process/threads to access the shared resource simultaneously.
 
     - Strong: The process blocked the longest is released from the queue first (FIFO). Guarantees no starvation.
     - Weak: order removed from blocked queue not specified.
+          http://cs.pnw.edu/~rlkraft/cs52500-2012/Dijkstra%20(strong)%20vs%20Posix%20(weak)%20semaphores.html
+            A "strong semaphore" is one in which an unblocked thread is guaranteed
+        to get possession of the semaphore. In a "weak semaphore", an unblocked
+        thread must recheck the value of the semaphore variable before it can
+        take possession of the semaphore. A weak semaphore can allow one thread
+        to starve another tread.
+
+
+        First, here are "implementations" of strong and weak semaphores that
+        can take on negative values. -1, 0, 1
+
+           STRONG                               WEAK
+           ------                               ----
+        // for this the values are < 0 for wait and >= 0 for post after arithmetic
+        P(s)                                  P(s)
+        {                                     {
+         s = s - 1;                            s = s - 1;
+         if (s < 0)                            while (s < 0)  // notice it has to check, during the cycle to check it may be blocked again
+         {                                     {
+            wait(s);                              wait(s);
+         }                                     }
+        }                                     }
+
+
+
+        V(s)                                  V(s)
+        {                                     {
+         s = s + 1;                            s = s + 1;
+         if (s >= 0)                           if (s >= 0)
+         {                                     {
+            unblockOneThread(s);                  unblockOneThread(s);
+         }                                     }
+        }                                     }
+
 
   - Mutex: is a lock and the processes that locked the mutex must be the one to unlock it.
 
   - Condition Variable: Data type used to block
 
-  - Monitor: Only one process by actively access a monitor at one time, it encapsulates procedures for the critical sections.
+  - Monitor: Ensure mutual exclusion since only one process actively accesses a monitor at one time, it encapsulates procedures for the critical section that .
 
   - Mail Boxes/Messages: Processes exchange data that may be used for synchronization.
 
@@ -1191,7 +1258,7 @@ shared memory, you must attach it to the address space of a process. You do this
     delete it; it just makes that memory unavailable to the current process.
     // --
 
-  	int shmget(key_t key, size_t size, int shmflg); // You create shared memory using the shmget function
+  int shmget(key_t key, size_t size, int shmflg); // You create shared memory using the shmget function
 
     // As with semaphores, the program provides key, which effectively names the shared memory segment,
     and the shmget function returns a shared memory identifier that is used in subsequent shared memory
@@ -1215,7 +1282,7 @@ shared memory, you must attach it to the address space of a process. You do this
     identifier. On failure, it returns –1.
  ```
 ---
-	Ex.
+	Ex. (same process as creating a shared semaphore in [1])
 	#include "shm_com.h"	// shared memory structure for both consumer and producer to use, has a flag within to indicate which process will continue. int written_by_you;
 
   Producer
@@ -1267,7 +1334,7 @@ shared memory, you must attach it to the address space of a process. You do this
   ```
   consumer
   ```
-  // Still create with same key
+  // Still create with same key, if existing OK.
   shmid = shmget((key_t)1234, sizeof(struct shared_use_st), 0666 | IPC_CREAT);
 
   // attach
@@ -1314,9 +1381,12 @@ shared memory, you must attach it to the address space of a process. You do this
 			   ...
 
       sem_wait(sem);
+      sem_post(sem);
 
-      // close the semaphore for this process, the semaphore remains in the system
+
+      // The sem_unlink() function removes the semaphore identified by name and marks the semaphore to be destroyed once all processes cease using it (this may mean immediately, if all processes that had the semaphore open have already closed it).
       sem_close(sem);
+      sem_unlink(SEM_NAME);
       ```
 
       Producer
@@ -1324,12 +1394,11 @@ shared memory, you must attach it to the address space of a process. You do this
       // name semaphore and is same name of existing semaphore ~~
       #define SEM_NAME "/mysem"
 
-  		// then in the other process open the semaphore so it can use it.
+  		// open the existing semaphore so it can use it.
   		sem_t *sem = sem_open(SEM_NAME, 0); /* Open a preexisting semaphore. */
 
-      // The sem_unlink() function removes the semaphore identified by name and marks the semaphore to be destroyed once all processes cease using it (this may mean immediately, if all processes that had the semaphore open have already closed it).
+      // close the semaphore for this process, the semaphore remains in the system
       sem_close(sem);
-      sem_unlink(SEM_NAME);
   		```
     ---
 		2. Putting a sem in shared memory.
@@ -1413,7 +1482,6 @@ shared memory. ex IPC_RMID
   int msgrcv(int msqid, void *msg_ptr, size_t msg_sz, long int msgtype, int msgflg); // The msgrcv function retrieves messages from a message queue
 
   int msgsnd(int msqid, const void *msg_ptr, size_t msg_sz, int msgflg); // The msgsnd function allows you to add a message to a message queue
-
   ```
 
 In Java:
@@ -1459,7 +1527,115 @@ In Java:
       packet = new DatagramPacket(sendBuf, sendLen + 4, remoteIpAddress, remotePort);
 			rcvHanlder.transferSocket.send(packet);
       ```
+###**Deadlocks**
+####**Definition**
+Is a permanent blocking of a set of processes that compete for a system resource or communicate with each other.
+A set of processes are deadlocked when each process in the blocked set are waiting for an event that can only be triggered by another processes that is also blocked.
 
+It is permanent and there is no efficient solution.
+
+####**notes**
+
+Many OS let the user deal with deadlocks.
+An OS can do avoidance by checking if a deadlock is possible and being conservative when allocating resources.
+Can also deal with it when a deadlock occurs, it may be easy to solve.
+
+2 resource categories
+- Reusable: Can be safely used by only one process at a time and is not depleted by that use. Examples are:
+  Processors, main and secondary memory, data structures.
+- Consumable: Can be created(produced) and destroyed(consumed). Examples are:
+  interrupts, signals, messages, I/O buffers.
+
+Approaches that an OS can take for deadlocks:
+1. Prevention:
+  - Resource Allocation policy: Conservative, it under commits resources.
+  - Different schemes: Requesting all the resources it needs at once, Preemption(forcibly remove resources), and Resource ordering.
+2. Avoidance: Dynamic choices based on current resource allocation state. Must know future process requests.
+  - Resource Allocation policy: Midway between detection and prevention
+  - Scheme: Manipulate to find a safe path for allocation
+    - Needs to know future resource requirements for all processes.
+  - Approaches:
+    1. Resource Allocation Denial: Do not grant an incremental resource request to process if this allocation might lead to deadlock.
+    2. Process Initialization Denial: Do not start a process if its demands might lead to deadlock.
+  - Algorithms:
+    - Banker Algorithm:
+      :State: reflects the current allocation of resources to processes
+      :Safe State: There is at least one sequence of resource allocations to processes that does not result in a deadlock.
+      :Unsafe state: Not safe, deadlock.
+3. Detection:
+  - Liberal, Requested resources are granted whenever possible.
+  - Scheme: Invoke periodically to test if there is a deadlock.
+
+Some conditions for a deadlock:
+1. Mutual Exclusion: Only one process may use a resource at a time
+2. Hold and wait: A process holds allocated resources while awaiting something.
+  - Prevention: Have a process request all of its required resources at one time and block it until all the requests can be granted simultaneously.
+3. No Pre-emption: no resource can be forcibly removed from a process holding it.
+  - Prevention: if a process holding certain resources is denied a further request, that process must release its original resources and request them again.
+    - Also define a linear ordering of resource types.
+4. Circular wait: closed chain of processes where each process holds at least one resource needed by the next process in the chain.
+
+####**Recovery Strategies**
+1. Abort all deadlocked Processes
+2. Back up each deadlocked process to some previously defined checkpoint and restart all processes.
+3. One by one abort deadlocked processes until deadlock no longer exists.
+4. One by one abort preempt (remove from processes) until deadlock no longer exists.
+
+Dining Philosophers problem:
+  Definition:
+    - 5 Philosophers and 5 forks.
+    - No two Philosophers can use the same fork at the same time (mutual exclusion)
+    - No starvation of Philosophers (avoid deadlock and starvation)
+
+  Solutions:
+    - If a philosopher cannot get both forks then they are put in the waiting queue. Monitor is good for this since entering a monitor guarantees both forks.
+    - If using semaphores only allow max 4 philosophers for the 5 forks.
+
+
+###**Databases**
+####**Relational DB**
+A relational database at its simplest is a set of tables used for storing data. Each table has a unique name and may relate to one or more other tables in the database through common values.
+
+Tables:
+A table in a database is a collection of rows and columns. Tables are also known as entities or relations.
+
+Rows:
+A row contains data pertaining to a single item or record in a table. Rows are also known as records or tuples.
+
+Columns:
+A column contains data representing a specific characteristic of the records in the table. Columns are also known as fields or attributes.
+
+Relationships:
+A relationship is a link between two tables (i.e, relations). Relationships make it possible to find data in one table that pertains to a specific record in another table.
+
+Datatypes:
+Each of a table's columns has a defined datatype that specifies the type of data that can exist in that column. For example, the FirstName column might be defined as varchar(20), indicating that it can contain a string of up to 20 characters. Unfortunately, datatypes vary widely between databases.
+
+Primary Keys:
+Most tables have a column or group of columns that can be used to identify records. For example, an Employees table might have a column called EmployeeID that is unique for every row. This makes it easy to keep track of a record over time and to associate a record with records in other tables.
+
+Foreign Keys:
+Foreign key columns are columns that link to primary key columns in other tables, thereby creating a relationship. For example, the Customers table might have a foreign key column called SalesRep that links to EmployeeID, the primary key in the Employees table.
+
+Relational Database Management System:
+A Relational Database Management System (RDBMS), commonly (but incorrectly) called a database, is software for creating, manipulating, and administering a database. For simplicity, we will often refer to RDBMSs as databases.
+
+#####**Commercial DB**
+Oracle:
+Oracle is the most popular relational database. It runs on both Unix and Windows. It used to be many times more expensive than SQL Server and DB2, but it has come down a lot in price.
+
+SQL Server:
+SQL Server is Microsoft's database and, not surprisingly, only runs on Windows. It has only a slightly higher market share than Oracle on Windows machines. Many people find it easier to use than Oracle.
+
+#####**Open Source DB**
+MySQL:
+Because of its small size, its speediness, and its very good documentation, MySQL has quickly become the most popular open source database. MySQL is available on both Windows and Unix, but it lacks some key features such as support for stored procedures.
+
+####**Non Relational DB**
+https://www.jamesserra.com/archive/2015/08/relational-databases-vs-non-relational-databases/
+Also called NoSQL databases, the most popular being MongoDB, DocumentDB
+
+most non-relational databases that are in the categories Document stores and Column stores can also be used for OLTP, adding to the confusion.  OLTP databases can be thought of as “Operational” databases, characterized by frequent, short transactions that include updates and that touch a small amount of data and where concurrency of thousands of transactions is very important (examples including banking applications and online reservations).  Integrity of data is very important so they support ACID transactions (Atomicity, Consistency, Isolation, Durability).  This is opposed to data warehouses, which are considered “Analytical” databases characterized by long, complex queries that touch a large amount of data and require a lot of resources.  Updates are infrequent.  An example is analysis of sales over the past year.
 
 ###**Testing**
 - Application Under Test (AUT)
@@ -1490,13 +1666,17 @@ It is meant to be adaptive to customers changing their requirements
 A Single Board Computer(SBC) is a printed circuit board (PCB) with a microcontroller and all components needed to make it function as a small computer
 
 ####**RPI: Touch screen**
-  The project was a system that helped tourist find locations of interest in a city, and my part was to create a touch screen kiosk that hosted the application so people without internet access could use it. I used a raspberry pi and PiFace to control the circuits that enabled a touch screen surface with infrared components. The main idea is to have 1 column of 8 infrared emitters on one side of the screen and a column of 8 infrared transistors on the other to create a touch screen area in between. The general operation is to have a single emitter on at a time and all the sensors would check if they can detect the ON emitter. If it doesn’t it means something was in the way. After cycling through the emitters, it will check if an intercept can be calculated.
+  The project was a system that helped tourist find locations of interest in a city, and my part was to create a touch screen kiosk that hosted the application so people without internet access could use it. I used a raspberry pi and PiFace to control the circuits that enabled an infrared touch screen surface. The main idea is to have 1 column of 8 infrared emitters on one side of the screen and a column of 8 infrared transistors on the other to create a touch screen area in between. The general operation is to have a single emitter on at a time and all the sensors would check if they can detect the ON emitter. If it doesn’t it means something was in the way. After cycling through the emitters, it will check if an intercept can be calculated.
   To test and visualize if the correct location was touched on the screen, I wrote an (visual studio (c sharp)) application that received the touch location and showed which lines were being blocked to cause the intercept.
 
-####**Arduino: maze robot:**
-  Using an Arduino nano, the project was to have a maze robot self navigate a line and a wall maze by combining multiple sensor's data and changing motor behaviour accordingly.
+  **RPI experience summary**
+  Most of the Raspberry pi experience is from my 4th year project where I used a raspberry pi and PiFace to control the circuits that enabled an infrared touch screen surface. It was fairly simple, mainly synchronizing the turning on of an infrared LED and then reading the sensors.
+    - The main idea is to have 1 column of 8 infrared emitters on one side of the screen and a column of 8 infrared transistors on the other to create a touch screen area in between. The general operation is to have a single emitter on at a time and all the sensors would check if they can detect the ON emitter. If it doesn’t it means something was in the way. After cycling through the emitters, it will check if an intercept can be calculated.
 
-	Using an Arduino uno and Raspberry PI, the project was a LED globe to attempt the Persistance of vision illusion, the idea is to spin a single vertical array of LEDs on a 2D ring fast enough, 30 frames per second, that it creates the illusion of a solid image when the LEDs and motor are synced.
+####**Arduino: maze robot:**
+  Using an Arduino nano connected to an H bridge (4 pins to control direction of the 2 motors (2 pins for each)) to control the motors and to infrared and sonar sensors, the project was to have a maze robot self navigate a line and a wall maze by combining multiple sensor's data and changing motor behaviour accordingly.
+
+	Using an Arduino uno and Raspberry PI, the project was a LED globe to attempt the Persistance of vision illusion, the idea is to spin a single vertical array of LEDs on a 2D ring fast enough, 30 frames per second, that it creates the illusion of a solid image when the LEDs and motor are synced. The pi just controlled the motor speed and the arduino was attached onto the spinning ring.
 
 ####**TFTP**
 
