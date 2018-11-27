@@ -76,7 +76,7 @@ def PasswordGenerator(strength):
         # random up to 10 char
         for y in range(10):
             chosen = random.randint(33,122)
-            password = chr(chosen)
+            password += chr(chosen)
 
             for elem in rangesList:
                 if(elem.low <= chosen <= elem.high):

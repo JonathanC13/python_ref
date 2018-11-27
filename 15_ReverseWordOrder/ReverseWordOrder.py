@@ -1,11 +1,13 @@
 # with the user input, reverse the word order.
 
-def RevereWordOrder(text):
+def ReverseWordOrder(text):
 
     userIn = input(text)
 
     # split on whitespace
     wordList = userIn.split()
+
+    #can just make a resultlist to place the reverse word
 
     # range(0, 6) is 0 to 5
     for x in range(len(wordList) // 2): # floor divide
@@ -14,8 +16,8 @@ def RevereWordOrder(text):
         wordList[x] = temp
 
         # split by space.join
-    # result = " ".join([word for word in wordList[::-1]]) 
+    # result = " ".join([word for word in wordList[::-1]])
 
     print (wordList)
 
-RevereWordOrder("What sentence would you like to reverse? ")
+ReverseWordOrder("What sentence would you like to reverse? ")

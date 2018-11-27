@@ -29,4 +29,24 @@ def Palindrome():
     else:
         print ("This word is not a palindrome")
 
+    print("second method of checking with no length division");
+    i = 0; #starting index
+    j = i_len-1;  #end length
+    pal_flag = 0;
+
+    if(j == 0):
+        print("input string is empty");
+    else:
+        while(i < j):
+            if (userIn[i] != userIn[j]):
+                pal_flag = 11;
+                break
+            i = i + 1;
+            j = j - 1;
+        # user message
+        if (pal_flag == 0):
+            print(userIn + " is a palindrome");
+        else:
+            print(userIn + " is not a palindrome");
+
 Palindrome()

@@ -63,7 +63,11 @@ def CowsAndBulls():
                 marked_cow = 1
                 if resultList[pos] == bull:
                     # just check whole range, something went wrong with pos + 1
-                    for check in range(pos+1, len(resultList)):
+                    a = pos + 1;
+                    if(a >= len(resultList)-1):
+                        a = len(resultList)-1
+
+                    for check in range(a, len(resultList)):
                         # first check if val matches
                         if userGuess[pos] == generated[check]:
                             # if match value, check if not marked as cow it is confirmed that this is a bull
@@ -104,7 +108,7 @@ def CowsAndBulls():
 
                     # if all marked then it changes to cow
                     if marked_cow == 1:
-                        
+
                         resultList[pos] == cow
 
         # outside for
