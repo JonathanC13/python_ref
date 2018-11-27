@@ -12,16 +12,12 @@ def maxOfThree(help_text = "Input 3 values:"):
     max = 0
 
     # a equal or greater than b
-    if(a >= b):
-        if(a >= c):
-            max = a
-        else:
-            max = c
-    else:
-        if(b >= c):
-            max = b
-        else:
-            max = c
+    if(a >= b) and (a >= c):
+        max = a
+    elif(b >= a) and (b >= c):
+        max = b
+    elif(c >= a) and (c >= b):
+        max = c
 
     print("The max value is " + str(max));
 
