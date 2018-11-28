@@ -28,11 +28,16 @@ class BdayJson:
                 inputAdd = input("Add a person and their birthday in the format >> Todd 1/3/2000 >>").split()
                 # add to json and dump into file?
                 if(len(inputAdd) == 2):
-                    #inputJson.update({inputAdd[0] : inputAdd[1]})
-                    inputJson[inputAdd[0]] = inputAdd[1]
-                    open_file.seek(0) # reset file position to beginning
-                    json.dump(inputJson, open_file)
-                    open_file.truncate()
+                    if inputAdd[0] in inputJson:
+                        inputConfirm = input("Name already exists in file, would you like to overwrite (Y/N): ").lower()
+                        if(inputConfirm == "n"):
+                            break
+                        else:
+                            #inputJson.update({inputAdd[0] : inputAdd[1]})
+                            inputJson[inputAdd[0]] = inputAdd[1]
+                            open_file.seek(0) # reset file position to beginning
+                            json.dump(inputJson, open_file)
+                            open_file.truncate()
                 else:
                     print("Not enough information provided.")
             elif (inputOption[0] == 'get'):
