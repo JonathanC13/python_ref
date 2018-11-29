@@ -31,7 +31,7 @@ class BdayJson:
                     if inputAdd[0] in inputJson:
                         inputConfirm = input("Name already exists in file, would you like to overwrite (Y/N): ").lower()
                         if(inputConfirm == "n"):
-                            break
+                            pass
                         else:
                             #inputJson.update({inputAdd[0] : inputAdd[1]})
                             inputJson[inputAdd[0]] = inputAdd[1]
