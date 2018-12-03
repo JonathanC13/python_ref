@@ -307,7 +307,7 @@ This list is meant to be a both a quick guide and reference for further research
 - A comparison based sorting algorithm
   - Divides entire dataset into groups of at most two.
   - Compares each number one at a time, moving the smallest number to left of the pair.
-  - (After you compare 2 groups together by starting with the leftmost value and sort them, in the end you have a group of 4. This continues until there is only one set).
+  - (After you compare 2 groups together by starting with the leftmost value and sort them, You create a group of 4. This continues until there is only one set).
   - ----
   - Once all pairs sorted it then compares left most elements of the two leftmost pairs creating a sorted group of four with the smallest numbers on the left and the largest ones on the right.
   - This process is repeated until there is only one set.
