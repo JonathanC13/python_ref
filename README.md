@@ -1,2 +1,2 @@
-#Hello
-This is a hello
+#C exercises
+For personal reference

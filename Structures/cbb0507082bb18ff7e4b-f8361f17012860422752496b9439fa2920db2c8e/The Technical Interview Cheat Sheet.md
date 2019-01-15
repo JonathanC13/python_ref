@@ -1,3 +1,36 @@
+## Script vs programming language
+- Program
+  - Usually used to handle data and produce certain outputs
+  - uses a compiler with compiles the whole program to machine language
+  - Compiled into stand alone application
+  - Ran independent of a parent program
+- Script
+  - Usually used to automate tasks.
+  - uses a interpreter which also converts the code to machine language but line by line.
+  - interpreted in another program, like JavaScript is put within HTML and is interpreted by the browser
+  - Ran inside of another program
+
+## JavaScript
+ - Not directly related to JAVA, just has java in the name
+ - It is one of the languages used in web development and it is used to define the behaviour of web pages
+  - Other:
+    1. HTML to define the content of web pages
+    2. CSS to specify the layout of web pages
+  ## Concepts
+    Scope
+    IIFE
+    MVC
+    Async/await
+    Closure
+    Callbac
+
+  ## Properties
+    - JavaScript is interpreted and sometimes compiled at runtime with a just-in-time (JIT) compiler.
+    - JavaScript is dynamically typed, where at run time the objects are given a type.
+    - Weakly typed, A type can be converted implicitly. Example is assigning a byte value to an integer. The value will convert to an integer.
+    - JavaScript code is often driven by events such as mouse clicks or keystrokes.
+    - Ran in the browser and now JavaScript is also building HTML files on the server too.
+
 ## Studying for a Tech Interview Sucks, so Here's a Cheat Sheet to Help
 
 This list is meant to be a both a quick guide and reference for further research into these topics.  It's basically a summary of that comp sci course you never took or forgot about, so there's no way it can cover everything in depth.  It also will be available as a [gist](https://gist.github.com/TSiege/cbb0507082bb18ff7e4b) on Github for everyone to edit and add to.
