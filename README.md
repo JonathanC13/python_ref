@@ -1,3 +1,5 @@
 # Python exercises
 
-For personal reference
+Exercises from https://www.practicepython.org/.
+
+Stored for personal reference.
