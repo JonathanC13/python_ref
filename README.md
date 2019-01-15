@@ -1,2 +1,3 @@
-#C exercises
+##Python exercises
+
 For personal reference
